@@ -10,7 +10,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/springBasic/pom.xml" />
-        <option value="$PROJECT_DIR$/springBootJPA/pom.xml" />
+        <option value="$PROJECT_DIR$/springBootBasic/springBootJPA/pom.xml" />
       </set>
     </option>
   </component>
