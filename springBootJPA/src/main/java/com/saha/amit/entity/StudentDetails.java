@@ -21,8 +21,11 @@ public class StudentDetails {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int studentDetailsId;
+
     @OneToOne
+    @JoinColumn(name = "unique_student_id", referencedColumnName = "student_Id")
     private Student student;
+
     private String fName;
     @Column(nullable = false)
     private String lName;

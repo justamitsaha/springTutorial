@@ -16,7 +16,9 @@ import java.time.LocalDateTime;
 public class Student {
 
     @Id
+    @Column(name = "student_id")
     private String studentId;
+
     //@NotNull Not just for JPA entities but for any bean validation
     @Column(nullable = false)  //specific to JPA
     private String fName;
