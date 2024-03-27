@@ -19,6 +19,9 @@ public class Student {
     @Column(name = "student_id")
     private String studentId;
 
+//    @OneToOne(mappedBy = "studentDetails")
+//    private StudentDetails studentDetails;
+
     //@NotNull Not just for JPA entities but for any bean validation
     @Column(nullable = false)  //specific to JPA
     private String fName;
@@ -28,6 +31,8 @@ public class Student {
     private String createdDate;
     @Enumerated(EnumType.STRING)
     private Status status;
+    private int age;
+
 
     public void setStudentId(String fName) {
         LocalDateTime currentTime = LocalDateTime.now();

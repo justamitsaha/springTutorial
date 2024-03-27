@@ -1,5 +1,6 @@
 package com.saha.amit.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.saha.amit.entity.enumerated.Semester;
 import com.saha.amit.entity.enumerated.Specialization;
 import com.saha.amit.entity.enumerated.Status;
@@ -22,13 +23,14 @@ public class StudentDetails {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int studentDetailsId;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "unique_student_id", referencedColumnName = "student_Id")
     private Student student;
 
     private String fName;
     @Column(nullable = false)
-    private String lName;
+    private String lastName;
     @CreationTimestamp
     private String createdDate;
     @UpdateTimestamp
