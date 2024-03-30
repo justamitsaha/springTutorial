@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "bankcheck")
+@Table(name = "bank_check")
 public class CheckTablePerClass extends PaymentTablePerClass {
 
     private  String checkNumber;
