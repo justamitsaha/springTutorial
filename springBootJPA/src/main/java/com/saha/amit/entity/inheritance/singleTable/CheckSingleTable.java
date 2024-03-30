@@ -1,6 +1,5 @@
 package com.saha.amit.entity.inheritance.singleTable;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -11,8 +10,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@DiscriminatorValue("cc")
-public class CreditCard extends  Payment{
+@DiscriminatorValue("ch")
+public class CheckSingleTable extends PaymentSingleTable {
 
-    private String cardNumber;
+    private  String checkNumber;
 }
