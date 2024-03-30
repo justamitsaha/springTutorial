@@ -10,6 +10,7 @@ public interface StudentDetailsRepository extends JpaRepository<StudentDetails, 
 
     List<StudentDetails> findByfName(String fName);
 
+
     List<StudentDetails> findByfNameContains(String fName);
 
     List<StudentDetails> findByLastNameContaining(String lastName);

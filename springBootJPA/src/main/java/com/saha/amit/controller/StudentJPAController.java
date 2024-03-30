@@ -29,6 +29,16 @@ public class StudentJPAController {
         return ResponseEntity.status(HttpStatus.FOUND).body(studentService.getAllStudentDetails(pageNumber, pageSize));
     }
 
+    @GetMapping("/findById")
+    public StudentDetails findById(Integer studentDetailsId) {
+        // return ResponseEntity.status(HttpStatus.FOUND).body(studentService.findById(studentDetailsId));
+        if (null == studentDetailsId) {
+            System.out.println("empty");
+            throw new RuntimeException();
+        }
+        return studentService.findById(studentDetailsId);
+    }
+
     @GetMapping("/getAllStudentDetailsSorted")
     public ResponseEntity<List<StudentDetails>> getAllStudentDetailsSorted(@RequestParam int pageNumber, @RequestParam int pageSize) {
         return ResponseEntity.status(HttpStatus.FOUND).body(studentService.getAllStudentDetailsSorted(pageNumber, pageSize));

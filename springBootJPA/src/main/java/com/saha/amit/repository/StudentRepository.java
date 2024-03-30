@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student,String> {
+public interface StudentRepository extends JpaRepository<Student, String> {
 
     @Query("from Student")
     List<Student> findAllStudents();
@@ -26,4 +26,7 @@ public interface StudentRepository extends JpaRepository<Student,String> {
 
     @Query("from Student")
     List<Student> findAllStudentsPage(Pageable pageable);
+
+    @Query(value = "select * from student where age > :min and age < :max  and f_name like CONCAT('%',:fName,'%')", nativeQuery = true)
+    List<Student> getStudentNativeQuery(@Param("min") int minAge, @Param("max") int maxAge, @Param("fName") String firstName);
 }

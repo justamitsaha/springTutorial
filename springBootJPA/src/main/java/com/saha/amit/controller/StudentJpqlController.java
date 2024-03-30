@@ -5,6 +5,7 @@ import com.saha.amit.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,6 +55,18 @@ public class StudentJpqlController {
     public ResponseEntity<List<Student>> findAllStudentsPage(@RequestParam int pageNumber, @RequestParam int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return ResponseEntity.status(HttpStatus.CREATED).body(studentRepository.findAllStudentsPage(pageable));
+    }
+
+    @GetMapping("/findAllStudentsPageSort")
+    public ResponseEntity<List<Student>> findAllStudentsPageSort(@RequestParam int pageNumber, @RequestParam int pageSize) {
+        Sort sort = Sort.by(new Sort.Order(Sort.Direction.ASC, "age"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        return ResponseEntity.status(HttpStatus.CREATED).body(studentRepository.findAllStudentsPage(pageable));
+    }
+
+    @GetMapping("/getStudentNativeQuery")
+    public ResponseEntity<List<Student>> getStudentNativeQuery(@RequestParam int minAge, @RequestParam int maxAge, @RequestParam String firstName) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(studentRepository.getStudentNativeQuery(minAge, maxAge, firstName));
     }
 
 }

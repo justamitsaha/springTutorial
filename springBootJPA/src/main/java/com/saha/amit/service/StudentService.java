@@ -59,6 +59,12 @@ public class StudentService {
         return lst;
     }
 
+    public StudentDetails findById(int studentDetailsId) {
+        return studentDetailsRepository.findById(studentDetailsId).get();
+    }
+
+
+
     public List<StudentDetails> getAllStudentDetailsSorted(int pageNumber, int pageSize) {
         Sort sort = Sort.by(new Sort.Order(Sort.Direction.ASC, "specialization"), new Sort.Order(Sort.Direction.DESC, "schoolMarksPercentage"));
         //Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "schoolMarksPercentage"));
