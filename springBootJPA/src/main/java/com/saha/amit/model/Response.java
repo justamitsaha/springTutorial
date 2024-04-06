@@ -1,4 +1,4 @@
-package com.saha.amit.record;
+package com.saha.amit.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

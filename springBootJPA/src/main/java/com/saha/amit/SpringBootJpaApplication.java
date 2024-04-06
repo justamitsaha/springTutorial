@@ -6,6 +6,9 @@ import com.saha.amit.entity.StudentDetails;
 import com.saha.amit.entity.enumerated.Semester;
 import com.saha.amit.entity.enumerated.Specialization;
 import com.saha.amit.entity.enumerated.Status;
+import com.saha.amit.entity.relationShip.oneMany.Customer;
+import com.saha.amit.entity.relationShip.oneMany.PhoneNumber;
+import com.saha.amit.repository.CustomerRepository;
 import com.saha.amit.repository.StudentDetailsRepository;
 import com.saha.amit.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 @SpringBootApplication
 public class SpringBootJpaApplication implements CommandLineRunner {
@@ -27,6 +29,9 @@ public class SpringBootJpaApplication implements CommandLineRunner {
     @Autowired
     private StudentDetailsRepository studentDetailsRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     public static void main(String[] args) {
         System.out.println("Swagger URL http://localhost:8080/swagger-ui/index.html#/");
         SpringApplication.run(SpringBootJpaApplication.class, args);
@@ -35,10 +40,40 @@ public class SpringBootJpaApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("runner");
-        //loadData();
+        // loadStudentData();
+       // saveCustomerPhone();
     }
 
-    public void loadData() {
+    public void saveCustomerPhone() {
+
+        Faker faker = new Faker();
+        for (int i = 0; i < 100; i++) {
+            Customer customer = new Customer();
+
+            customer.setName(faker.funnyName().name());
+            List<PhoneNumber> numbers = new ArrayList<>();
+
+            PhoneNumber phoneNumber1 = new PhoneNumber();
+            phoneNumber1.setNumber(faker.phoneNumber().cellPhone());
+            phoneNumber1.setType("personal");
+            phoneNumber1.setCustomer(customer);
+
+
+            PhoneNumber phoneNumber2 = new PhoneNumber();
+            phoneNumber2.setNumber(faker.phoneNumber().phoneNumber());
+            phoneNumber2.setType("office");
+            phoneNumber1.setCustomer(customer);
+
+            numbers.add(phoneNumber1);
+            numbers.add(phoneNumber2);
+            phoneNumber2.setCustomer(customer);
+            customer.setNumbers(numbers);
+
+            customerRepository.save(customer);
+        }
+    }
+
+    public void loadStudentData() {
         Faker faker = new Faker();
         Random random = new Random();
         for (int i = 0; i < 200; i++) {
@@ -49,7 +84,7 @@ public class SpringBootJpaApplication implements CommandLineRunner {
                     .fName(fName)
                     .lName(lName)
                     .status(Status.ACTIVE)
-                    .age(random.nextInt(14,36))
+                    .age(random.nextInt(14, 36))
                     .build();
             student.setStudentId(student.getFName());
 
@@ -67,7 +102,7 @@ public class SpringBootJpaApplication implements CommandLineRunner {
                     .email(faker.name().firstName() + "@gmail.com")
                     .phoneNumber(faker.phoneNumber().cellPhone())
                     .schoolMarksPercentage(faker.number().numberBetween(60, 101))
-                    .cgpa(random.nextFloat(5.0f,10.0f))
+                    .cgpa(random.nextFloat(5.0f, 10.0f))
                     .build();
             studentRepository.save(student);
             studentDetailsRepository.save(studentDetails);

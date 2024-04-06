@@ -1,4 +1,4 @@
-package com.saha.amit.record;
+package com.saha.amit.model;
 
 import com.saha.amit.entity.enumerated.Semester;
 import com.saha.amit.entity.enumerated.Specialization;

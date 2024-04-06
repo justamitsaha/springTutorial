@@ -2,7 +2,7 @@ package com.saha.amit.controller;
 
 import com.saha.amit.entity.Student;
 import com.saha.amit.entity.StudentDetails;
-import com.saha.amit.record.CreateStudent;
+import com.saha.amit.model.CreateStudent;
 import com.saha.amit.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

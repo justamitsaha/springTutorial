@@ -1,6 +1,6 @@
 package com.saha.amit.controller;
 
-import com.saha.amit.record.Response;
+import com.saha.amit.model.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
