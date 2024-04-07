@@ -50,11 +50,10 @@ public class OneManyRelationController {
     @GetMapping("/getPhoneByName")
     public ResponseEntity<List<CustomerPhoneRecord>> getPhoneByName(@RequestParam String name) {
         List<Customer> customerList = customerRepository.findByNameContaining(name);
-        System.out.println(customerList.size());
         List<CustomerPhoneRecord> customerPhoneRecordArrayList = new ArrayList<>();
 
         customerList.forEach(customer -> {
-            CustomerPhoneRecord customerPhoneRecord = new CustomerPhoneRecord();
+            /*CustomerPhoneRecord customerPhoneRecord = new CustomerPhoneRecord();
             customerPhoneRecord.setId(customer.getId());
             customerPhoneRecord.setName(customer.getName());
             List<PhoneDetails> phoneDetailsList = new ArrayList<>();
@@ -65,11 +64,34 @@ public class OneManyRelationController {
                 phoneDetailsList.add(phoneDetails);
             });
             customerPhoneRecord.setPhoneDetailsArrayList(phoneDetailsList);
-            customerPhoneRecordArrayList.add(customerPhoneRecord);
+            customerPhoneRecordArrayList.add(customerPhoneRecord);*/
+            customerPhoneRecordArrayList.add(getCustomerPhoneRecordFromCustomer(customer));
         });
         return ResponseEntity.status(HttpStatus.FOUND).body(customerPhoneRecordArrayList);
     }
+
+    @GetMapping("/getPhoneById")
+    public ResponseEntity<CustomerPhoneRecord> getPhoneById(@RequestParam Long id) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(getCustomerPhoneRecordFromCustomer(customerRepository.findById(id).orElse(null)));
+    }
+
+    CustomerPhoneRecord getCustomerPhoneRecordFromCustomer(Customer customer){
+        CustomerPhoneRecord customerPhoneRecord = new CustomerPhoneRecord();
+        customerPhoneRecord.setId(customer.getId());
+        customerPhoneRecord.setName(customer.getName());
+        List<PhoneDetails> phoneDetailsList = new ArrayList<>();
+        customer.getNumbers().forEach(phoneNumber -> {
+            PhoneDetails phoneDetails = new PhoneDetails();
+            phoneDetails.setNumber(phoneNumber.getNumber());
+            phoneDetails.setType(phoneNumber.getType());
+            phoneDetailsList.add(phoneDetails);
+        });
+        customerPhoneRecord.setPhoneDetailsArrayList(phoneDetailsList);
+        return customerPhoneRecord;
+    }
 }
+
+
 
 
 
