@@ -11,7 +11,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
+public class Customer {         //Owning side
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

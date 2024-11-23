@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Profile {
+public class Profile {      //referenced side
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
