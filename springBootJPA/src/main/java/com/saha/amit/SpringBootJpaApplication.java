@@ -5,6 +5,10 @@ import com.github.javafaker.Faker;
 import com.saha.amit.dto.AddressDto;
 import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.ProfileDto;
+import com.saha.amit.model.Address;
+import com.saha.amit.model.Customer;
+import com.saha.amit.model.Orders;
+import com.saha.amit.model.Profile;
 import com.saha.amit.service.CustomerService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,6 +17,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SpringBootApplication
@@ -36,21 +42,27 @@ public class SpringBootJpaApplication implements CommandLineRunner {
         Faker faker = new Faker();
 
         for (int i=0; i<10; i++){
-            AddressDto addressDto = new AddressDto();
-            addressDto.setCity(faker.address().city());
-            addressDto.setState(faker.address().state());
-            addressDto.setStreet(faker.address().streetAddress());
-            addressDto.setZipCode(faker.address().zipCode());
+            Address address = new Address();
+            address.setCity(faker.address().city());
+            address.setState(faker.address().state());
+            address.setStreet(faker.address().streetAddress());
+            address.setZipCode(faker.address().zipCode());
 
-            ProfileDto profileDto = new ProfileDto();
-            profileDto.setEmail(faker.internet().emailAddress());
-            profileDto.setPhoneNumber(faker.phoneNumber().cellPhone());
+            Profile profile = new Profile();
+            profile.setEmail(faker.internet().emailAddress());
+            profile.setPhoneNumber(faker.phoneNumber().cellPhone());
 
-            CustomerDto customerDto = new CustomerDto();
-            customerDto.setName(faker.funnyName().name());
-            customerDto.setProfileDto(profileDto);
-            customerDto.setAddress(addressDto);
-            customerService.save(customerDto);
+            Customer customer = new Customer();
+            customer.setName(faker.funnyName().name());
+            customer.setProfile(profile);
+            customer.setAddress(address);
+            customerService.save(customer);
+
+//            List<Orders> ordersList = new ArrayList<>();
+//            for (int j =0; j < faker.random().nextInt(0, 5); i++){
+//                Orders orders = new Orders();
+//                orders.setOrderNumber(faker.);
+//            }
         }
 
     }

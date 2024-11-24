@@ -1,6 +1,7 @@
 package com.saha.amit;
 
 import com.saha.amit.dto.CustomerDto;
+import com.saha.amit.model.Customer;
 import com.saha.amit.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,14 @@ public class CustomerController {
     CustomerService customerService;
 
 
-    @GetMapping("{id}")
-    public ResponseEntity<CustomerDto> get(@PathVariable Long id){
-        return ResponseEntity.ok().body(customerService.get(id));
+    @GetMapping("id/{id}")
+    public ResponseEntity<String> getReferenceById(@PathVariable Long id){
+        return ResponseEntity.ok().body(customerService.getReferenceById(id).toString());
+    }
+
+    @GetMapping("email/{email}")
+    public ResponseEntity<String> getFromEmail(@PathVariable String email){
+        return ResponseEntity.ok().body(customerService.findByEmailContaining(email).toString());
     }
 
 }
