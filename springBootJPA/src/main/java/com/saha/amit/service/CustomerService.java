@@ -34,10 +34,9 @@ public class CustomerService {
         return customerRepository.getReferenceById( id);
     }
 
-    public List<Profile> findByEmailContaining(String email){
+    public List<Customer> findByEmailContaining(String email){
         log.info("findByEmailContaining -->"+ email);
         var customer = profileRepository.findByEmailContaining(email);
-        log.info("findByEmailContaining -->" +customer );
-        return customer;
+        return customerRepository.findByProfileIn(customer);
     }
 }
