@@ -5,10 +5,8 @@ import com.github.javafaker.Faker;
 import com.saha.amit.dto.AddressDto;
 import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.ProfileDto;
-import com.saha.amit.model.Address;
-import com.saha.amit.model.Customer;
-import com.saha.amit.model.Orders;
-import com.saha.amit.model.Profile;
+import com.saha.amit.model.*;
+import com.saha.amit.repository.CategoryRepository;
 import com.saha.amit.service.CustomerService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +25,9 @@ public class SpringBootJpaApplication implements CommandLineRunner {
     @Autowired
     CustomerService customerService;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     private final Log log = LogFactory.getLog(SpringBootJpaApplication.class);
 
 
@@ -42,6 +43,12 @@ public class SpringBootJpaApplication implements CommandLineRunner {
         Faker faker = new Faker();
 
         for (int i=0; i<10; i++){
+            Category category = new Category();
+            category.setName(faker.commerce().department());
+            categoryRepository.save(category);
+        }
+
+        for (int i=0; i<10; i++){
             Address address = new Address();
             address.setCity(faker.address().city());
             address.setState(faker.address().state());
@@ -51,18 +58,17 @@ public class SpringBootJpaApplication implements CommandLineRunner {
             Profile profile = new Profile();
             profile.setEmail(faker.internet().emailAddress());
             profile.setPhoneNumber(faker.phoneNumber().cellPhone());
+            profile.setAddress(address);
 
             Customer customer = new Customer();
             customer.setName(faker.funnyName().name());
             customer.setProfile(profile);
-            customer.setAddress(address);
             customerService.save(customer);
 
-//            List<Orders> ordersList = new ArrayList<>();
-//            for (int j =0; j < faker.random().nextInt(0, 5); i++){
-//                Orders orders = new Orders();
-//                orders.setOrderNumber(faker.);
-//            }
+            for (int j=0; j< faker.random().nextInt(1,5);j++){
+                Orders orders = new Orders();
+
+            }
         }
 
     }

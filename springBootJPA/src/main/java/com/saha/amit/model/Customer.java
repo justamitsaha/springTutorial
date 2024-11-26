@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Customer {         //Owning side
@@ -17,15 +16,14 @@ public class Customer {         //Owning side
     private Long id;
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @MapsId
+    @JoinColumn(name = "id")
     private Profile profile;        //referenced side
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Orders> orders;
 
-    @Embedded
-    private Address address;
 
 }
 

@@ -1,33 +1,30 @@
 package com.saha.amit.model;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Orders {
+public class Payment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String orderNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentStatus paymentStatus;
 
-    @OneToOne(mappedBy = "order")
-    private Payment payment;
-
-    @OneToMany(mappedBy = "order")
-    private List<Product> products;
-
+    @OneToOne
+    @JoinColumn(name = "order_id", unique = true)
+    private Orders order;
 }
+
+

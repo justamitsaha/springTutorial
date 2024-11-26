@@ -15,15 +15,11 @@ public class Profile {      //referenced side
     private String email;
     private String phoneNumber;
 
-    @OneToOne(mappedBy = "profile")
-    private Customer customer;      //Owning side
+    @OneToOne(mappedBy = "profile",  fetch = FetchType.EAGER)
+    private Customer customer;      //Owning side which has FK
 
-    @Override
-    public String toString() {
-        return "Profile{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
-    }
+
+    @Embedded
+    private Address address;
+
 }

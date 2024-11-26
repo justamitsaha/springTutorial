@@ -1,5 +1,6 @@
 package com.saha.amit.dto;
 
+import com.saha.amit.model.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ public class ProfileDto {
     private Long id;
     private String email;
     private String phoneNumber;
-    private CustomerDto customer;
+    private CustomerDto customerDto;
+    private AddressDto addressDto;
 
 }

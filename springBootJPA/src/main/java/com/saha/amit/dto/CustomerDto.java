@@ -14,13 +14,8 @@ import java.util.List;
 public class CustomerDto {
     private Long id;
     private String name;
-
     private ProfileDto profileDto;
-
     private List<OrderDto> orderDto;
-
-    private AddressDto address;
-
 }
 
 
