@@ -49,7 +49,7 @@ CREATE TABLE Product (
 );
 
 CREATE TABLE Category (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    category_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
@@ -57,6 +57,6 @@ CREATE TABLE product_category (
     product_id BIGINT,
     category_id BIGINT,
     PRIMARY KEY (product_id, category_id),
-    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES Product(id),
-    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES Category(id)
+    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES Product(product_id),
+    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES Category(category_id)
 );
