@@ -8,18 +8,23 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "Profile")
 public class Profile {      //referenced side
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "profile_uuid")
+    private Long profileUuid;
+
+    @Column(name = "email", nullable = false)
     private String email;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @OneToOne(mappedBy = "profile",  fetch = FetchType.EAGER)
     private Customer customer;      //Owning side which has FK
 
-
     @Embedded
     private Address address;
-
 }
+

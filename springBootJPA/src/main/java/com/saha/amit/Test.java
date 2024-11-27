@@ -1,17 +1,15 @@
 package com.saha.amit;
 
+import com.github.javafaker.Faker;
 import com.saha.amit.dto.AddressDto;
 import com.saha.amit.model.Address;
 import org.modelmapper.ModelMapper;
 
 public class Test {
     public static void main(String[] args) {
-        Address address = new Address("a", "b", "c", "d");
-        ModelMapper modelMapper = new ModelMapper();
-        AddressDto addressDto = modelMapper.map(address, AddressDto.class);
-        System.out.println(addressDto);
-        addressDto.setCity("Lauru");
-        Address address1 = modelMapper.map(addressDto, Address.class);
-        System.out.println(address1);
+        Faker faker = new Faker();
+        for (int j =0; j <1; j++){
+            System.out.println(j);
+        }
     }
 }

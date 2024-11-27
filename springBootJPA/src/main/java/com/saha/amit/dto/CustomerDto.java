@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerDto {
-    private Long id;
+    private Long customerUuid;
     private String name;
     private ProfileDto profileDto;
     private List<OrderDto> orderDto;

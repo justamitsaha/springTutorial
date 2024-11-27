@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProfileDto {
-    private Long id;
+    private Long profileUuid;
     private String email;
     private String phoneNumber;
     private CustomerDto customerDto;
