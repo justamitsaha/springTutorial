@@ -20,8 +20,8 @@ public class Orders {
     private Long orderUuid;
     private String orderNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id, , nullable = false")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @OneToOne(mappedBy = "order")
