@@ -39,7 +39,10 @@ public class SpringBootJpaApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("Swagger URL http://localhost:8080/swagger-ui/index.html#/");
         log.info("H2 console URL http://localhost:8080/h2-console/login.do");
+        //setUpData();
+    }
 
+    public void setUpData(){
         Faker faker = new Faker();
         List<Category> categories = new ArrayList<>();
 
@@ -89,6 +92,7 @@ public class SpringBootJpaApplication implements CommandLineRunner {
                 Payment payment = new Payment();
                 payment.setPaymentStatus(PaymentStatus.SUCCESS);
                 order.setOrderNumber(String.valueOf(faker.random().nextInt(10000, 99999)));
+                order.setCustomer(customer);
                 List<Product> products = new ArrayList<>();
                 var count2 = faker.random().nextInt(1, 5);
                 for (int k = 0; k < count2; k++) {

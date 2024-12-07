@@ -27,7 +27,7 @@ public class Orders {
     @OneToOne(mappedBy = "order")
     private Payment payment;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.DETACH)
     private List<Product> products;
 
 }

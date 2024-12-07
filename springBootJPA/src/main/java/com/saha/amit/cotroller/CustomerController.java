@@ -2,8 +2,10 @@ package com.saha.amit.cotroller;
 
 import com.saha.amit.dto.AddressDto;
 import com.saha.amit.dto.CustomerDto;
+import com.saha.amit.dto.OrderDto;
 import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.model.Customer;
+import com.saha.amit.model.Orders;
 import com.saha.amit.model.Profile;
 import com.saha.amit.service.CustomerService;
 import org.modelmapper.ModelMapper;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("customer")
@@ -29,6 +34,12 @@ public class CustomerController {
         CustomerDto customerDto = modelMapper.map(customer,CustomerDto.class);
         customerDto.setProfileDto(modelMapper.map(customer.getProfile(), ProfileDto.class));
         customerDto.getProfileDto().setAddressDto(modelMapper.map(customer.getProfile().getAddress(), AddressDto.class));
+        List<OrderDto> ordersList = new ArrayList<>();
+        customer.getOrders().forEach(orders -> {
+            OrderDto orderDto = modelMapper.map(orders, OrderDto.class);
+            ordersList.add(orderDto);
+        });
+        customerDto.setOrderDto(ordersList);
         return ResponseEntity.ok().body(customerDto);
     }
 

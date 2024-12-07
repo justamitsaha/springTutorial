@@ -21,7 +21,7 @@ public class Customer {         //Owning side
     @JoinColumn(name = "customerUuid")
     private Profile profile;        //referenced side
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Orders> orders;
 }
 
