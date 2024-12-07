@@ -1,14 +1,9 @@
 package com.saha.amit.cotroller;
 
-import com.saha.amit.dto.AddressDto;
 import com.saha.amit.dto.CustomerDto;
-import com.saha.amit.dto.OrderDto;
-import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.model.Customer;
-import com.saha.amit.model.Orders;
-import com.saha.amit.model.Profile;
 import com.saha.amit.service.CustomerService;
-import org.modelmapper.ModelMapper;
+import com.saha.amit.util.DataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,23 +24,18 @@ public class CustomerController {
 
     @GetMapping("id/{id}")
     public ResponseEntity<CustomerDto> getReferenceById(@PathVariable Long id){
-        ModelMapper modelMapper = new ModelMapper();
         Customer customer = customerService.getReferenceById(id);
-        CustomerDto customerDto = modelMapper.map(customer,CustomerDto.class);
-        customerDto.setProfileDto(modelMapper.map(customer.getProfile(), ProfileDto.class));
-        customerDto.getProfileDto().setAddressDto(modelMapper.map(customer.getProfile().getAddress(), AddressDto.class));
-        List<OrderDto> ordersList = new ArrayList<>();
-        customer.getOrders().forEach(orders -> {
-            OrderDto orderDto = modelMapper.map(orders, OrderDto.class);
-            ordersList.add(orderDto);
-        });
-        customerDto.setOrderDto(ordersList);
-        return ResponseEntity.ok().body(customerDto);
+        return ResponseEntity.ok().body(DataMapper.getCustomer(customer));
     }
 
     @GetMapping("email/{email}")
-    public ResponseEntity<String> getFromEmail(@PathVariable String email){
-        return ResponseEntity.ok().body(customerService.findByEmailContaining(email).toString());
+    public ResponseEntity<List<CustomerDto>> getFromEmail(@PathVariable String email){
+        List<CustomerDto> customerDtoList = new ArrayList<>();
+        customerService.findByEmailContaining(email).forEach(customer -> {
+            CustomerDto customerDto = DataMapper.getCustomer(customer);
+            customerDtoList.add(customerDto);
+        });
+        return ResponseEntity.ok().body(customerDtoList);
     }
 
 }
