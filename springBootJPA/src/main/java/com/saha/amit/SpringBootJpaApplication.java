@@ -39,7 +39,7 @@ public class SpringBootJpaApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("Swagger URL http://localhost:8080/swagger-ui/index.html#/");
         log.info("H2 console URL http://localhost:8080/h2-console/login.do");
-        //setUpData();
+        setUpData();
     }
 
     public void setUpData(){
