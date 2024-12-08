@@ -36,7 +36,8 @@ public class CustomerService {
 
     public List<Customer> findByEmailContaining(String email){
         log.info("findByEmailContaining -->"+ email);
-        var customer = profileRepository.findByEmailContaining(email);
-        return customerRepository.findByProfileIn(customer);
+//        var customer = profileRepository.findByEmailContaining(email);
+//        return customerRepository.findByProfileIn(customer);
+        return customerRepository.findByEmailContainingWithOrders(email);
     }
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Getter
@@ -13,11 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDto {
-    private Long id;
+    private UUID orderUuid;
     private String orderNumber;
-
     private CustomerDto customer;
-
     private List<ProductDto> productDto;
 
 }

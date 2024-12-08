@@ -41,7 +41,7 @@ CREATE TABLE Customer (
 
 
 CREATE TABLE Orders (
-    order_uuid BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_uuid CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL PRIMARY KEY,
     order_number VARCHAR(255) NOT NULL,
     customer_id BIGINT,
     CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES Customer(customer_uuid) ON DELETE CASCADE
@@ -55,7 +55,7 @@ CREATE TABLE Orders (
 CREATE TABLE Payment (
     payment_uuid BIGINT AUTO_INCREMENT PRIMARY KEY,
     payment_status ENUM('SUCCESS', 'FAILURE', 'PROCESSING') NOT NULL,
-    order_id BIGINT UNIQUE,
+    order_id CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci UNIQUE,
     CONSTRAINT fk_order_payment FOREIGN KEY (order_id) REFERENCES Orders(order_uuid) ON DELETE CASCADE
 );
 
@@ -64,7 +64,7 @@ CREATE TABLE Product (
     product_uuid BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     price DOUBLE,
-    order_id BIGINT,
+    order_id CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES Orders(order_uuid)
 );
 

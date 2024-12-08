@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Entity
@@ -16,8 +18,14 @@ import java.util.List;
 @NoArgsConstructor
 public class Orders {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderUuid;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "order_uuid", updatable = false, nullable = false)
+    private String orderUuid;
+
     private String orderNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
