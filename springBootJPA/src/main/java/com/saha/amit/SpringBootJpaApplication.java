@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +43,12 @@ public class SpringBootJpaApplication implements CommandLineRunner {
         setUpData();
     }
 
-    public void setUpData(){
+    @Transactional
+    public void setUpData() {
         Faker faker = new Faker();
         List<Category> categories = new ArrayList<>();
 
+        // Create and save categories
         for (int i = 0; i < 10; i++) {
             Category category = new Category();
             category.setName(faker.commerce().department());
@@ -53,22 +56,23 @@ public class SpringBootJpaApplication implements CommandLineRunner {
         }
         categories = categoryRepository.saveAll(categories);
 
+        // Create and save products
         List<Product> productList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Product product = new Product();
             product.setName(faker.commerce().productName());
-            product.setPrice(faker.random().nextDouble());
-            var count = faker.random().nextInt(0, 5);
+            product.setPrice(faker.number().randomDouble(2, 10, 1000));
+            int count = faker.random().nextInt(1, 5);
             List<Category> categoryList = new ArrayList<>();
             for (int j = 0; j < count; j++) {
-                categoryList.add(categories.get(j));
+                categoryList.add(categories.get(faker.random().nextInt(0, categories.size() - 1)));
             }
             product.setCategories(categoryList);
             productList.add(product);
-            productRepository.save(product);
         }
+        productList = productRepository.saveAll(productList);
 
-
+        // Create and save customers with orders and payments
         for (int i = 0; i < 10; i++) {
             Address address = new Address();
             address.setCity(faker.address().city());
@@ -85,20 +89,25 @@ public class SpringBootJpaApplication implements CommandLineRunner {
             customer.setName(faker.funnyName().name());
             customer.setProfile(profile);
 
-            var count1 = faker.random().nextInt(1, 5);
+            int count1 = faker.random().nextInt(1, 5);
             List<Orders> ordersList = new ArrayList<>();
             for (int j = 0; j < count1; j++) {
                 Orders order = new Orders();
-                Payment payment = new Payment();
-                payment.setPaymentStatus(PaymentStatus.SUCCESS);
-                order.setOrderNumber(String.valueOf(faker.random().nextInt(10000, 99999)));
+                order.setOrderNumber(String.valueOf(faker.number().numberBetween(10000, 99999)));
                 order.setCustomer(customer);
+
                 List<Product> products = new ArrayList<>();
-                var count2 = faker.random().nextInt(1, 5);
+                int count2 = faker.random().nextInt(1, 5);
                 for (int k = 0; k < count2; k++) {
-                    products.add(productList.get(faker.random().nextInt(0, 9)));
+                    products.add(productList.get(faker.random().nextInt(0, productList.size() - 1)));
                 }
                 order.setProducts(products);
+
+                Payment payment = new Payment();
+                payment.setPaymentStatus(PaymentStatus.SUCCESS);
+                payment.setOrder(order);
+                order.setPayment(payment);
+
                 ordersList.add(order);
             }
             customer.setOrders(ordersList);

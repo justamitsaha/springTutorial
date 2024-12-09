@@ -24,7 +24,7 @@ public class Orders {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "order_uuid", updatable = false, nullable = false)
-    private String orderUuid;
+    private UUID orderUuid;
 
     private String orderNumber;
 
@@ -32,10 +32,15 @@ public class Orders {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Payment payment;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.DETACH)
+    @ManyToMany
+    @JoinTable(
+            name = "order_product",
+            joinColumns = @JoinColumn(name = "order_uuid"),
+            inverseJoinColumns = @JoinColumn(name = "product_uuid")
+    )
     private List<Product> products;
-
 }
+

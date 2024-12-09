@@ -18,12 +18,13 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productUuid;
+
     private String name;
+
     private double price;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Orders order;
+    @ManyToMany(mappedBy = "products")
+    private List<Orders> orders;
 
     @ManyToMany
     @JoinTable(
