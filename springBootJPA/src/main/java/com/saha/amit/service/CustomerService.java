@@ -31,7 +31,12 @@ public class CustomerService {
     }
 
     public Customer getReferenceById(Long id){
-        return customerRepository.getReferenceById( id);
+        //return customerRepository.getReferenceById( id);
+        return customerRepository.findCustomersById(id);
+    }
+
+    public Customer getCustomerProfileOrder(Long id){
+        return customerRepository.getCustomerProfileOrder(id);
     }
 
     public List<Customer> findByEmailContaining(String email){
