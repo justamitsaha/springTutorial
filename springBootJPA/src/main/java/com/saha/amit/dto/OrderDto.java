@@ -19,4 +19,6 @@ public class OrderDto {
     private CustomerDto customer;
     private List<ProductDto> productDto;
 
+    public OrderDto(UUID orderUuid, String orderNumber) {
+    }
 }

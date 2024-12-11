@@ -113,5 +113,8 @@ public class SpringBootJpaApplication implements CommandLineRunner {
             customer.setOrders(ordersList);
             customerService.save(customer);
         }
+
+        Customer customer4 = customerService.getCustomerProfileOrder(6L);
+        System.out.println();
     }
 }

@@ -42,7 +42,7 @@ public class CustomerController {
     @GetMapping("order/{id}")
     public ResponseEntity<CustomerDto> getCustomerProfileOrder(@PathVariable Long id){
         Customer customer = customerService.getCustomerProfileOrder(id);
-        return ResponseEntity.ok().body(DataMapper.getCustomer(customer));
+        return ResponseEntity.ok().body(DataMapper.getCustomerProfile(customer));
     }
 
 
