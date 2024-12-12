@@ -18,7 +18,4 @@ public class OrderDto {
     private String orderNumber;
     private CustomerDto customer;
     private List<ProductDto> productDto;
-
-    public OrderDto(UUID orderUuid, String orderNumber) {
-    }
 }

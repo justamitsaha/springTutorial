@@ -16,7 +16,4 @@ public class ProfileDto {
     private String phoneNumber;
     private CustomerDto customerDto;
     private AddressDto addressDto;
-
-    public ProfileDto(Long profileUuid, String email, String phoneNumber, AddressDto addressDto) {
-    }
 }

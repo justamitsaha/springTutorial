@@ -31,7 +31,7 @@ public class CustomerController {
     @GetMapping("id/{id}")
     public ResponseEntity<CustomerDto> getCustomerProfile(@PathVariable Long id){
         Customer customer = customerService.getReferenceById(id);
-        return ResponseEntity.ok().body(DataMapper.getCustomerProfile(customer));
+        return ResponseEntity.ok().body(DataMapper.getCustomerProfileMapper(customer));
     }
 
     @Operation(
@@ -42,7 +42,7 @@ public class CustomerController {
     @GetMapping("order/{id}")
     public ResponseEntity<CustomerDto> getCustomerProfileOrder(@PathVariable Long id){
         Customer customer = customerService.getCustomerProfileOrder(id);
-        return ResponseEntity.ok().body(DataMapper.getCustomerProfile(customer));
+        return ResponseEntity.ok().body(DataMapper.getCustomerProfileOrder(customer));
     }
 
 
@@ -51,7 +51,7 @@ public class CustomerController {
     public ResponseEntity<List<CustomerDto>> getFromEmail(@PathVariable String email){
         List<CustomerDto> customerDtoList = new ArrayList<>();
         customerService.findByEmailContaining(email).forEach(customer -> {
-            CustomerDto customerDto = DataMapper.getCustomer(customer);
+            CustomerDto customerDto = DataMapper.getCustomerProfileOrderMapper(customer);
             customerDtoList.add(customerDto);
         });
         return ResponseEntity.ok().body(customerDtoList);

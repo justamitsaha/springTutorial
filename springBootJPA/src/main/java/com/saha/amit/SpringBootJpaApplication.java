@@ -106,7 +106,7 @@ public class SpringBootJpaApplication implements CommandLineRunner {
                 Payment payment = new Payment();
                 payment.setPaymentStatus(PaymentStatus.SUCCESS);
                 payment.setOrder(order);
-                order.setPayment(payment);
+                //order.setPayment(payment);
 
                 ordersList.add(order);
             }
