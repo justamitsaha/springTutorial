@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class CustomerService {
@@ -44,5 +45,15 @@ public class CustomerService {
 //        var customer = profileRepository.findByEmailContaining(email);
 //        return customerRepository.findByProfileIn(customer);
         return customerRepository.findByEmailContainingWithOrders(email);
+    }
+
+    public List<Customer> findCustomersWithMoreThanFiveOrders(){
+        if (new Random().nextBoolean()){
+            log.info("findCustomersWithMoreThanFiveOrders JPA");
+            return customerRepository.findCustomersWithMoreThanFiveOrders();
+        }else {
+            log.info("findCustomersWithMoreThanFiveOrdersNative");
+            return customerRepository.findCustomersWithMoreThanFiveOrdersNative();
+        }
     }
 }

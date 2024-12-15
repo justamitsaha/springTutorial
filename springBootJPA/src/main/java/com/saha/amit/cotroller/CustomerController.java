@@ -57,4 +57,14 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerDtoList);
     }
 
+    @GetMapping("moreThanFiveOrders")
+    public ResponseEntity<List<CustomerDto>> findCustomersWithMoreThanFiveOrders(){
+        List<CustomerDto> customerDtoList = new ArrayList<>();
+        customerService.findCustomersWithMoreThanFiveOrders().forEach(customer -> {
+            CustomerDto customerDto = DataMapper.getCustomerProfileOrderMapper(customer);
+            customerDtoList.add(customerDto);
+        });
+        return ResponseEntity.ok().body(customerDtoList);
+    }
+
 }

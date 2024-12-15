@@ -89,7 +89,7 @@ public class SpringBootJpaApplication implements CommandLineRunner {
             customer.setName(faker.funnyName().name());
             customer.setProfile(profile);
 
-            int count1 = faker.random().nextInt(1, 5);
+            int count1 = faker.random().nextInt(1, 15);
             List<Orders> ordersList = new ArrayList<>();
             for (int j = 0; j < count1; j++) {
                 Orders order = new Orders();
@@ -113,8 +113,5 @@ public class SpringBootJpaApplication implements CommandLineRunner {
             customer.setOrders(ordersList);
             customerService.save(customer);
         }
-
-        Customer customer4 = customerService.getCustomerProfileOrder(6L);
-        System.out.println();
     }
 }
