@@ -1,4 +1,4 @@
-USE `spring_boot_jpa`;
+--USE `spring_boot_jpa`;
 
 DROP TABLE IF EXISTS product_category;
 DROP TABLE IF EXISTS Order_Product;
@@ -37,7 +37,8 @@ CREATE TABLE Customer (
 -- To prevent orphaned orders, the fk_customer foreign key constraint in the Orders table  includes ON DELETE CASCADE
 
 CREATE TABLE Orders (
-    order_uuid CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL PRIMARY KEY,
+    order_uuid VARCHAR(255) NOT NULL PRIMARY KEY,
+    --order_uuid CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL PRIMARY KEY,
     order_number VARCHAR(255) NOT NULL,
     customer_id BIGINT,
     CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES Customer(customer_uuid) ON DELETE CASCADE
@@ -50,7 +51,8 @@ CREATE TABLE Orders (
 CREATE TABLE Payment (
     payment_uuid BIGINT AUTO_INCREMENT PRIMARY KEY,
     payment_status ENUM('SUCCESS', 'FAILURE', 'PROCESSING') NOT NULL,
-    order_id CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci UNIQUE,
+    --order_id CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci UNIQUE,
+    order_id VARCHAR(36) UNIQUE,
     CONSTRAINT fk_order_payment FOREIGN KEY (order_id) REFERENCES Orders(order_uuid) ON DELETE CASCADE
 );
 
@@ -67,7 +69,8 @@ CREATE TABLE Product (
 -- Each entry links one order to one product.
 
 CREATE TABLE Order_Product (
-    order_uuid CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    order_uuid VARCHAR(36) NOT NULL,
+    --order_uuid CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     product_uuid BIGINT NOT NULL,
     PRIMARY KEY (order_uuid, product_uuid),
     CONSTRAINT fk_order FOREIGN KEY (order_uuid) REFERENCES Orders(order_uuid) ON DELETE CASCADE,
@@ -88,6 +91,6 @@ CREATE TABLE product_category (
     product_id BIGINT,
     category_id BIGINT,
     PRIMARY KEY (product_id, category_id),
-    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES Product(product_uuid) ON DELETE CASCADE,
+    CONSTRAINT fk_join_product FOREIGN KEY (product_id) REFERENCES Product(product_uuid) ON DELETE CASCADE,
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES Category(category_uuid) ON DELETE CASCADE
 );
