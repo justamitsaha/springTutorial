@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 @SpringBootApplication
@@ -58,7 +59,7 @@ public class SpringBootJpaApplication implements CommandLineRunner {
 
         // Create and save products
         List<Product> productList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 150; i++) {
             Product product = new Product();
             product.setName(faker.commerce().productName());
             product.setPrice(faker.number().randomDouble(2, 10, 1000));
@@ -84,9 +85,11 @@ public class SpringBootJpaApplication implements CommandLineRunner {
             profile.setEmail(faker.internet().emailAddress());
             profile.setPhoneNumber(faker.phoneNumber().cellPhone());
             profile.setAddress(address);
+            String name = faker.funnyName().name();
+            profile.setName(name);
 
             Customer customer = new Customer();
-            customer.setName(faker.funnyName().name());
+            customer.setCustomerName(name);
             customer.setProfile(profile);
 
             int count1 = faker.random().nextInt(1, 15);
@@ -94,7 +97,6 @@ public class SpringBootJpaApplication implements CommandLineRunner {
             for (int j = 0; j < count1; j++) {
                 Orders order = new Orders();
                 order.setOrderNumber(String.valueOf(faker.number().numberBetween(10000, 99999)));
-                order.setCustomer(customer);
 
                 List<Product> products = new ArrayList<>();
                 int count2 = faker.random().nextInt(1, 5);
@@ -104,14 +106,22 @@ public class SpringBootJpaApplication implements CommandLineRunner {
                 order.setProducts(products);
 
                 Payment payment = new Payment();
-                payment.setPaymentStatus(PaymentStatus.SUCCESS);
+                Random random = new Random();
+                var result = switch (random.nextInt(1,4)){
+                    case 1 -> PaymentStatus.SUCCESS;
+                    case 2 -> PaymentStatus.FAILURE;
+                    default -> PaymentStatus.PROCESSING;
+                };
+                payment.setPaymentStatus(result);
                 payment.setOrder(order);
-                //order.setPayment(payment);
+                order.setPayment(payment);
 
+                order.setCustomer(customer);  // Set the customer for each order
                 ordersList.add(order);
             }
             customer.setOrders(ordersList);
             customerService.save(customer);
         }
     }
+
 }

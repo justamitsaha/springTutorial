@@ -56,4 +56,9 @@ public class CustomerService {
             return customerRepository.findCustomersWithMoreThanFiveOrdersNative();
         }
     }
+
+
+    public List<Customer> findCustomersWithMoreThanFiveSuccessfulOrders(){
+        return customerRepository.findCustomersWithMoreThanFiveSuccessfulOrders();
+    }
 }

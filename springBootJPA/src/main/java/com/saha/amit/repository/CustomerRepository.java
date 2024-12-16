@@ -26,12 +26,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "WHERE c.customerUuid = :id")
     Customer getCustomerProfileOrder(@Param("id") Long id);
 
-//    @Query("SELECT new com.example.CustomerDto(c.customerUuid, c.name, p.email, p.phoneNumber, a.street, a.city, a.state, a.zipCode) " +
-//            "FROM Customer c " +
-//            "JOIN c.profile p " +
-//            "JOIN p.address a " +
-//            "WHERE c.customerUuid = :id")
-//    CustomerDto findCustomerProfileById(@Param("id") Long id);
 
     @Query("SELECT c FROM Customer c JOIN FETCH c.orders WHERE c.profile IN :profiles")
     List<Customer> findByProfileIn(@Param("profiles") List<Profile> profiles);
@@ -44,9 +38,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     List<Customer> findByEmailContainingWithOrders(@Param("email") String email);
 
 
+
+    //@Query("SELECT c FROM Customer c WHERE SIZE(c.orders) > 5")
     @Query("SELECT c FROM Customer c " +
-            "JOIN FETCH c.profile p " +
-            "JOIN FETCH c.orders o " +
+            "JOIN c.profile p " +
+            "JOIN c.orders o " +
             "GROUP BY c " +
             "HAVING COUNT(o) > 5")
     List<Customer> findCustomersWithMoreThanFiveOrders();
@@ -58,6 +54,14 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "HAVING COUNT(o.order_uuid) > 5",
             nativeQuery = true)
     List<Customer> findCustomersWithMoreThanFiveOrdersNative();
+
+    @Query("SELECT c FROM Customer c " +
+            "JOIN c.orders o " +
+            "JOIN o.payment p " +
+            "WHERE p.paymentStatus = 'SUCCESS' " +
+            "GROUP BY c.customerUuid " +
+            "HAVING COUNT(o) > 5")
+    List<Customer> findCustomersWithMoreThanFiveSuccessfulOrders();
 
 }
 

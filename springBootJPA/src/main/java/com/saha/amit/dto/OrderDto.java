@@ -18,4 +18,5 @@ public class OrderDto {
     private String orderNumber;
     private CustomerDto customer;
     private List<ProductDto> productDto;
+    private PaymentDto paymentDto;
 }

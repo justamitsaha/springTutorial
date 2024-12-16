@@ -26,10 +26,9 @@ public class CustomerController {
     @Operation(
             summary = "Get Customer information",
             description = "This API will use Join fetch to join Customer and Profile to fetch the details" +
-                    "in a single query"
-    )
+                    "in a single query")
     @GetMapping("id/{id}")
-    public ResponseEntity<CustomerDto> getCustomerProfile(@PathVariable Long id){
+    public ResponseEntity<CustomerDto> getCustomerProfile(@PathVariable Long id) {
         Customer customer = customerService.getReferenceById(id);
         return ResponseEntity.ok().body(DataMapper.getCustomerProfileMapper(customer));
     }
@@ -37,18 +36,16 @@ public class CustomerController {
     @Operation(
             summary = "Get Customer information",
             description = "This API will use Join fetch to join Customer and Profile and related orders to fetch the details" +
-                    "in a single query"
-    )
+                    "in a single query")
     @GetMapping("order/{id}")
-    public ResponseEntity<CustomerDto> getCustomerProfileOrder(@PathVariable Long id){
+    public ResponseEntity<CustomerDto> getCustomerProfileOrder(@PathVariable Long id) {
         Customer customer = customerService.getCustomerProfileOrder(id);
         return ResponseEntity.ok().body(DataMapper.getCustomerProfileOrder(customer));
     }
 
 
-
     @GetMapping("email/{email}")
-    public ResponseEntity<List<CustomerDto>> getFromEmail(@PathVariable String email){
+    public ResponseEntity<List<CustomerDto>> getFromEmail(@PathVariable String email) {
         List<CustomerDto> customerDtoList = new ArrayList<>();
         customerService.findByEmailContaining(email).forEach(customer -> {
             CustomerDto customerDto = DataMapper.getCustomerProfileOrderMapper(customer);
@@ -58,10 +55,20 @@ public class CustomerController {
     }
 
     @GetMapping("moreThanFiveOrders")
-    public ResponseEntity<List<CustomerDto>> findCustomersWithMoreThanFiveOrders(){
+    public ResponseEntity<List<CustomerDto>> findCustomersWithMoreThanFiveOrders() {
         List<CustomerDto> customerDtoList = new ArrayList<>();
         customerService.findCustomersWithMoreThanFiveOrders().forEach(customer -> {
-            CustomerDto customerDto = DataMapper.getCustomerProfileOrderMapper(customer);
+            CustomerDto customerDto = DataMapper.getCustomerProfileOrder(customer);
+            customerDtoList.add(customerDto);
+        });
+        return ResponseEntity.ok().body(customerDtoList);
+    }
+
+    @GetMapping("moreThanFiveSuccessfulOrders")
+    public ResponseEntity<List<CustomerDto>> findCustomersWithMoreThanFiveSuccessfulOrders() {
+        List<CustomerDto> customerDtoList = new ArrayList<>();
+        customerService.findCustomersWithMoreThanFiveSuccessfulOrders().forEach(customer -> {
+            CustomerDto customerDto = DataMapper.getCustomerProfileOrderPaymentMapper(customer);
             customerDtoList.add(customerDto);
         });
         return ResponseEntity.ok().body(customerDtoList);

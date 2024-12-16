@@ -13,6 +13,7 @@ import lombok.Setter;
 public class ProfileDto {
     private Long profileUuid;
     private String email;
+    private String name;
     private String phoneNumber;
     private CustomerDto customerDto;
     private AddressDto addressDto;

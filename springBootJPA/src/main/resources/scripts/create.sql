@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS Profile;
 CREATE TABLE Profile (
     profile_uuid BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     phone_number VARCHAR(15),
     street VARCHAR(255),
     city VARCHAR(255),
@@ -26,7 +27,7 @@ CREATE TABLE Profile (
 
 CREATE TABLE Customer (
     customer_uuid BIGINT,
-    name VARCHAR(255) NOT NULL,
+    customer_name VARCHAR(255) NOT NULL,
     PRIMARY KEY (customer_uuid),
     CONSTRAINT fk_profile FOREIGN KEY (customer_uuid) REFERENCES Profile(profile_uuid) ON DELETE CASCADE
 );
@@ -61,7 +62,7 @@ CREATE TABLE Payment (
 
 CREATE TABLE Product (
     product_uuid BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL UNIQUE,
     price DOUBLE
 );
 

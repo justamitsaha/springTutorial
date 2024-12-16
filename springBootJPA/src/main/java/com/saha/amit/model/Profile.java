@@ -18,10 +18,12 @@ public class Profile {      //referenced side
     @Column(name = "email", nullable = false)
     private String email;
 
+    private String name;
+
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne(mappedBy = "profile",  fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "profile",  fetch = FetchType.LAZY)
     private Customer customer;      //Owning side which has FK
 
     @Embedded

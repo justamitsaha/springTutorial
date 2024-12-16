@@ -15,7 +15,7 @@ public class Customer {         //Owning side
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerUuid;
 
-    private String name;
+    private String customerName;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @MapsId
