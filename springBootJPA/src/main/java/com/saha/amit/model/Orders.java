@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor       //This was causing payments to get called with unwanted queries
 @NoArgsConstructor
 public class Orders {
     @Id

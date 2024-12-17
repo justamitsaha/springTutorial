@@ -42,23 +42,23 @@ public class CustomerService {
 
     public List<Customer> findByEmailContaining(String email){
         log.info("findByEmailContaining -->"+ email);
-//        var customer = profileRepository.findByEmailContaining(email);
-//        return customerRepository.findByProfileIn(customer);
+        /*var customer = profileRepository.findByEmailContaining(email);
+        return customerRepository.findByProfileIn(customer);*/
         return customerRepository.findByEmailContainingWithOrders(email);
     }
 
-    public List<Customer> findCustomersWithMoreThanFiveOrders(){
+    public List<Customer> findCustomersWithMoreThanThreeOrders(){
         if (new Random().nextBoolean()){
-            log.info("findCustomersWithMoreThanFiveOrders JPA");
-            return customerRepository.findCustomersWithMoreThanFiveOrders();
+            log.info("findCustomersWithMoreThanThreeOrders JPA");
+            return customerRepository.findCustomersWithMoreThanThreeOrders();
         }else {
-            log.info("findCustomersWithMoreThanFiveOrdersNative");
-            return customerRepository.findCustomersWithMoreThanFiveOrdersNative();
+            log.info("findCustomersWithMoreThanThreeOrdersNative");
+            return customerRepository.findCustomersWithMoreThanThreeOrdersNative();
         }
     }
 
 
-    public List<Customer> findCustomersWithMoreThanFiveSuccessfulOrders(){
-        return customerRepository.findCustomersWithMoreThanFiveSuccessfulOrders();
+    public List<Customer> findCustomersWithMoreThanThreeSuccessfulOrders(){
+        return customerRepository.findCustomersWithMoreThanThreeSuccessfulOrders();
     }
 }

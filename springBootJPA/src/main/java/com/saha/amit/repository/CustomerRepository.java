@@ -39,29 +39,29 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
 
 
-    //@Query("SELECT c FROM Customer c WHERE SIZE(c.orders) > 5")
+    //@Query("SELECT c FROM Customer c WHERE SIZE(c.orders) > 3")
     @Query("SELECT c FROM Customer c " +
             "JOIN c.profile p " +
             "JOIN c.orders o " +
             "GROUP BY c " +
-            "HAVING COUNT(o) > 5")
-    List<Customer> findCustomersWithMoreThanFiveOrders();
+            "HAVING COUNT(o) > 3")
+    List<Customer> findCustomersWithMoreThanThreeOrders();
 
     @Query(value = "SELECT c.* FROM Customer c " +
             "JOIN Profile p ON c.customer_uuid = p.profile_uuid " +
             "JOIN Orders o ON c.customer_uuid = o.customer_id " +
             "GROUP BY c.customer_uuid " +
-            "HAVING COUNT(o.order_uuid) > 5",
+            "HAVING COUNT(o.order_uuid) > 3",
             nativeQuery = true)
-    List<Customer> findCustomersWithMoreThanFiveOrdersNative();
+    List<Customer> findCustomersWithMoreThanThreeOrdersNative();
 
     @Query("SELECT c FROM Customer c " +
             "JOIN c.orders o " +
             "JOIN o.payment p " +
             "WHERE p.paymentStatus = 'SUCCESS' " +
             "GROUP BY c.customerUuid " +
-            "HAVING COUNT(o) > 5")
-    List<Customer> findCustomersWithMoreThanFiveSuccessfulOrders();
+            "HAVING COUNT(o) > 3")
+    List<Customer> findCustomersWithMoreThanThreeSuccessfulOrders();
 
 }
 

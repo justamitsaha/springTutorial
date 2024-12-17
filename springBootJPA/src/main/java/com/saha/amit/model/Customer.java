@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class Customer {         //Owning side
     @Id

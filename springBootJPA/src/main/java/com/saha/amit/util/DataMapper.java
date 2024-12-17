@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DataMapper {
 
-    public static CustomerDto getCustomerProfileMapper(Customer customer){
+    public static CustomerDto getCustomerProfileModelMapper(Customer customer){
         ModelMapper modelMapper = new ModelMapper();
         CustomerDto customerDto = modelMapper.map(customer,CustomerDto.class);
         customerDto.setProfileDto(modelMapper.map(customer.getProfile(), ProfileDto.class));
