@@ -17,9 +17,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 @SpringBootApplication
@@ -61,10 +59,10 @@ public class SpringBootJpaApplication implements CommandLineRunner {
         List<Product> productList = new ArrayList<>();
         for (int i = 0; i < 150; i++) {
             Product product = new Product();
-            product.setName(faker.commerce().productName());
+            product.setName(faker.commerce().productName() +i);
             product.setPrice(faker.number().randomDouble(2, 10, 1000));
             int count = faker.random().nextInt(1, 5);
-            List<Category> categoryList = new ArrayList<>();
+            Set<Category> categoryList = new HashSet<>();
             for (int j = 0; j < count; j++) {
                 categoryList.add(categories.get(faker.random().nextInt(0, categories.size() - 1)));
             }
@@ -97,7 +95,6 @@ public class SpringBootJpaApplication implements CommandLineRunner {
             for (int j = 0; j < count1; j++) {
                 Orders order = new Orders();
                 order.setOrderNumber(String.valueOf(faker.number().numberBetween(10000, 99999)));
-
                 List<Product> products = new ArrayList<>();
                 int count2 = faker.random().nextInt(1, 5);
                 for (int k = 0; k < count2; k++) {

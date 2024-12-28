@@ -14,7 +14,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDto {
-    private UUID orderUuid;
+    private String orderUuid;
+    // private UUID orderUuid;      // has issue with mySql with corresponding model class Order
     private String orderNumber;
     private CustomerDto customer;
     private List<ProductDto> productDto;

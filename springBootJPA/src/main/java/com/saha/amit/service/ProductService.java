@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -40,7 +37,7 @@ public class ProductService {
                 p.setProductUuid(id);
                 p.setName(productName);
                 p.setPrice(productPrice);
-                p.setCategories(new ArrayList<>());
+                p.setCategories(new HashSet<>());
                 return p;
             });
 

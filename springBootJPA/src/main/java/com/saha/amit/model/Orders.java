@@ -23,8 +23,9 @@ public class Orders {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "order_uuid", updatable = false, nullable = false)
-    private UUID orderUuid;
+    @Column(name = "order_uuid", updatable = false, nullable = false, columnDefinition = "CHAR(36)")
+    private String orderUuid;
+    // private UUID orderUuid;      // has issue with mySql
 
     private String orderNumber;
 
