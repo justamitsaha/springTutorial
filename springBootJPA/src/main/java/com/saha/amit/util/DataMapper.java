@@ -60,7 +60,7 @@ public class DataMapper {
         customerDto.getProfileDto().setAddressDto(modelMapper.map(customer.getProfile().getAddress(), AddressDto.class));
         List<OrderDto> ordersList = new ArrayList<>();
         customer.getOrders().forEach(orders -> {
-            OrderDto orderDto = modelMapper.map(orders, OrderDto.class);
+            OrderDto orderDto = new OrderDto(orders.getOrderUuid(), orders.getOrderNumber());
             ordersList.add(orderDto);
         });
         customerDto.setOrderDto(ordersList);

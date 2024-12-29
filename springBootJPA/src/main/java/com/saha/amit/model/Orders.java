@@ -25,7 +25,7 @@ public class Orders {
     )
     @Column(name = "order_uuid", updatable = false, nullable = false, columnDefinition = "CHAR(36)")
     private String orderUuid;
-    // private UUID orderUuid;      // has issue with mySql
+    // private UUID orderUuid;      // has issue with mySql works with H2
 
     private String orderNumber;
 

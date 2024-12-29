@@ -27,5 +27,6 @@ public class Profile {      //referenced side
 
     @Embedded
     private Address address;
+
 }
 

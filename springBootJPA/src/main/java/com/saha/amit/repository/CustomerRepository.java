@@ -66,8 +66,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
 
     @Query("SELECT c FROM Customer c " +
-            "JOIN FETCH c.profile p " +
             "JOIN FETCH c.orders " +
+            "JOIN FETCH c.profile p " +
             "WHERE p.email LIKE %:email%")
     List<Customer> findByEmailContainingWithOrders(@Param("email") String email);
 
