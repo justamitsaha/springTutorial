@@ -20,4 +20,9 @@ public class OrderDto {
     private CustomerDto customer;
     private List<ProductDto> productDto;
     private PaymentDto paymentDto;
+
+    public OrderDto(String orderUuid, String orderNumber) {
+        this.orderUuid = orderUuid;
+        this.orderNumber = orderNumber;
+    }
 }

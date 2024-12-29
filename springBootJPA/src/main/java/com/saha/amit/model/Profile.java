@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-//@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Profile")
 public class Profile {      //referenced side
