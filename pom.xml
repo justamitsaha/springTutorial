@@ -12,6 +12,7 @@
         <module>springBootBasic</module>
         <module>spring-Basic</module>
         <module>springBootJPA</module>
+        <module>springJdbcTemplate</module>
     </modules>
 
 
