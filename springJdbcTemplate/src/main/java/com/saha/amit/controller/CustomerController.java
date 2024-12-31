@@ -24,7 +24,7 @@ public class CustomerController {
 
     @PostMapping("1/save")
     public ResponseEntity<Integer> insertUser(@RequestBody CustomerDto customerDto){
-        return ResponseEntity.ok().body(customerRepositoryJdbc.insertUser(customerDto.getCustomerName()));
+        return ResponseEntity.ok().body(customerRepositoryJdbc.insertCustomer(customerDto));
     }
 
 }

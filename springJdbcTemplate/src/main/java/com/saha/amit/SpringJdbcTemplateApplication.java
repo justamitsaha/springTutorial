@@ -95,7 +95,7 @@ public class SpringJdbcTemplateApplication implements CommandLineRunner {
                 List<Product> products = new ArrayList<>();
                 int count2 = faker.random().nextInt(1, 5);
                 for (int k = 0; k < count2; k++) {
-                    products.add(productList.get(faker.random().nextInt(0, productList.size() - 1)));
+                    products.add(productList.get(k));
                 }
                 order.setProducts(products);
 
