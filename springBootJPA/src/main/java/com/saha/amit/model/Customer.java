@@ -1,7 +1,9 @@
 package com.saha.amit.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class Customer {         //Owning side
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerUuid;
 
+    @Column(name = "customer_name", nullable = false)
     private String customerName;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
