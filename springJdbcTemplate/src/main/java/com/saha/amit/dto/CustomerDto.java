@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -29,6 +31,8 @@ public class CustomerDto {
     private String state;
     @Schema(description = "Zip code", example = "90503")
     private String zipCode;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<OrderDto> orders;
 
     public CustomerDto(String email, String name, String phoneNumber, String street, String city, String state, String zipCode) {
         this.email = email;

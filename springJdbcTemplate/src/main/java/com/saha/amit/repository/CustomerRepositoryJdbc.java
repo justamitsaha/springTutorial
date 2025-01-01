@@ -2,6 +2,8 @@ package com.saha.amit.repository;
 
 
 import com.saha.amit.dto.CustomerDto;
+import com.saha.amit.dto.ProfileDto;
+import com.saha.amit.mapper.ProfileRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -47,5 +49,11 @@ public class CustomerRepositoryJdbc {
         // Insert into Customer table using the generated profile_uuid
         String customerSql = "INSERT INTO Customer (customer_uuid, customer_name) VALUES (?, ?)";
         return jdbcTemplate.update(customerSql, profileUuid, customerDto.getName());
+    }
+
+
+    public ProfileDto findById(Long profileUuid) {
+        String sql = "SELECT * FROM Profile WHERE profile_uuid = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{profileUuid}, new ProfileRowMapper());
     }
 }

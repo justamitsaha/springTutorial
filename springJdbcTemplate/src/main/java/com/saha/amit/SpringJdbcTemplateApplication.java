@@ -11,11 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.saha.amit")
+@EnableJpaRepositories(basePackages = "com.saha.amit.repository.jpa")
 public class SpringJdbcTemplateApplication implements CommandLineRunner {
 
     private final Log log = LogFactory.getLog(SpringJdbcTemplateApplication.class);
