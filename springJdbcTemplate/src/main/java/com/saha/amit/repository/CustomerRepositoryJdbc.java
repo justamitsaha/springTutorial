@@ -2,19 +2,22 @@ package com.saha.amit.repository;
 
 
 import com.saha.amit.dto.CustomerDto;
+import com.saha.amit.dto.CustomerProfileOrderDto;
 import com.saha.amit.dto.ProfileDto;
+import com.saha.amit.mapper.CustomerProfileOrderRowMapper;
 import com.saha.amit.mapper.ProfileRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class CustomerRepositoryJdbc {
@@ -23,7 +26,7 @@ public class CustomerRepositoryJdbc {
     private JdbcTemplate jdbcTemplate;
 
 
-    public int insertCustomer(CustomerDto customerDto) {
+    public Long insertCustomer(CustomerDto customerDto) {
         // Insert into Profile table
         String profileSql = "INSERT INTO Profile (email, name, phone_number, street, city, state, zip_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -44,16 +47,43 @@ public class CustomerRepositoryJdbc {
         }, keyHolder);
 
         // Retrieve the generated profile_uuid
-        Long profileUuid = keyHolder.getKey().longValue();
+        Long profileUuid = Objects.requireNonNull(keyHolder.getKey()).longValue();
 
         // Insert into Customer table using the generated profile_uuid
         String customerSql = "INSERT INTO Customer (customer_uuid, customer_name) VALUES (?, ?)";
-        return jdbcTemplate.update(customerSql, profileUuid, customerDto.getName());
+        if(jdbcTemplate.update(customerSql, profileUuid, customerDto.getName()) > 0)
+            return profileUuid;
+        else
+            return  -1L;
     }
 
 
     public ProfileDto findById(Long profileUuid) {
         String sql = "SELECT * FROM Profile WHERE profile_uuid = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{profileUuid}, new ProfileRowMapper());
+    }
+
+    public List<CustomerProfileOrderDto> findAllCustomersWithProfilesAndOrders() {
+        String sql = "SELECT c.customer_uuid, c.customer_name, " +
+                "p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, " +
+                "o.order_uuid, o.order_number " +
+                "FROM Customer c " +
+                "JOIN Profile p ON c.customer_uuid = p.profile_uuid " +
+                "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id";
+
+        return jdbcTemplate.query(sql, new CustomerProfileOrderRowMapper());
+    }
+
+
+    public List<CustomerProfileOrderDto> findCustomersWithProfilesAndOrdersByEmail(String emailFilter) {
+        String sql = "SELECT c.customer_uuid, c.customer_name, " +
+                "p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, " +
+                "o.order_uuid, o.order_number " +
+                "FROM Customer c " +
+                "JOIN Profile p ON c.customer_uuid = p.profile_uuid " +
+                "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id " +
+                "WHERE p.email LIKE ?";
+
+        return jdbcTemplate.query(sql, new Object[]{"%" + emailFilter + "%"}, new CustomerProfileOrderRowMapper());
     }
 }

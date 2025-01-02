@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Getter
@@ -31,8 +32,6 @@ public class CustomerDto {
     private String state;
     @Schema(description = "Zip code", example = "90503")
     private String zipCode;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<OrderDto> orders;
 
     public CustomerDto(String email, String name, String phoneNumber, String street, String city, String state, String zipCode) {
         this.email = email;
@@ -42,6 +41,19 @@ public class CustomerDto {
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerDto that = (CustomerDto) o;
+        return Objects.equals(customerUuid, that.customerUuid) && Objects.equals(email, that.email) && Objects.equals(phoneNumber, that.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customerUuid, email, phoneNumber);
     }
 }
 
