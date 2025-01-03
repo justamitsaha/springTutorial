@@ -3,15 +3,13 @@ package com.saha.amit.controller;
 
 import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.CustomerProfileOrderDto;
+import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.repository.CustomerRepositoryJdbc;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,9 +27,19 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerRepositoryJdbc.insertCustomer(customerDto));
     }
 
+    @GetMapping("2/{profileUuid}")
+    public ResponseEntity<ProfileDto> findCustomerProfileById(@PathVariable Long profileUuid) {
+        return ResponseEntity.ok().body(customerRepositoryJdbc.findCustomerProfileById(profileUuid));
+    }
 
-    public ResponseEntity<List<CustomerProfileOrderDto>> fetchUserById(){
+    @GetMapping("3/customers/orders")
+    public ResponseEntity<List<CustomerProfileOrderDto>> findAllCustomersWithProfilesAndOrders(){
         return ResponseEntity.ok().body(customerRepositoryJdbc.findAllCustomersWithProfilesAndOrders());
+    }
+
+    @GetMapping("4/customer/{email}")
+    public ResponseEntity<List<CustomerProfileOrderDto>> findCustomersWithProfilesAndOrdersByEmail(@PathVariable String email){
+        return ResponseEntity.ok().body(customerRepositoryJdbc.findCustomersWithProfilesAndOrdersByEmail(email));
     }
 
 }

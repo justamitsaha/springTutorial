@@ -1,13 +1,11 @@
 package com.saha.amit;
 
-import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.repository.CustomerRepositoryJdbc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,7 +34,7 @@ public class ProfileRepositoryIntegrationTest {
 //        CustomerDto customerDto = new CustomerDto("test@example.com", "Test User", "1234567890", "123 Street",
 //                "City", "State", "12345");
 //        Long id = customerRepositoryJdbc.insertCustomer(customerDto);
-        ProfileDto fetchCustomer = customerRepositoryJdbc.findById(13L);
+        ProfileDto fetchCustomer = customerRepositoryJdbc.findCustomerProfileById(13L);
         assertNotNull(fetchCustomer);
 //        assertEquals(fetchCustomer.getName(), customerDto.getName());
 //        assertEquals(fetchCustomer.getEmail(), customerDto.getEmail());

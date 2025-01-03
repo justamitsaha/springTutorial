@@ -4,18 +4,17 @@ package com.saha.amit.repository;
 import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.CustomerProfileOrderDto;
 import com.saha.amit.dto.ProfileDto;
+import com.saha.amit.mapper.CustomerProfileOrderResultSetExtractor;
 import com.saha.amit.mapper.CustomerProfileOrderRowMapper;
 import com.saha.amit.mapper.ProfileRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,7 +57,7 @@ public class CustomerRepositoryJdbc {
     }
 
 
-    public ProfileDto findById(Long profileUuid) {
+    public ProfileDto findCustomerProfileById(Long profileUuid) {
         String sql = "SELECT * FROM Profile WHERE profile_uuid = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{profileUuid}, new ProfileRowMapper());
     }
@@ -71,11 +70,23 @@ public class CustomerRepositoryJdbc {
                 "JOIN Profile p ON c.customer_uuid = p.profile_uuid " +
                 "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id";
 
-        return jdbcTemplate.query(sql, new CustomerProfileOrderRowMapper());
+        return jdbcTemplate.query(sql, new CustomerProfileOrderResultSetExtractor());
+    }
+
+    public List<CustomerProfileOrderDto> findCustomersWithProfilesAndOrdersByCustomerUuid(Long customerUuid) {
+        String sql = "SELECT c.customer_uuid, c.customer_name, " +
+                "p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, " +
+                "o.order_uuid, o.order_number " +
+                "FROM Customer c " +
+                "JOIN Profile p ON c.customer_uuid = p.profile_uuid " +
+                "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id " +
+                "WHERE c.customer_uuid = ?";
+
+        return jdbcTemplate.query(sql, new Object[]{customerUuid}, new CustomerProfileOrderResultSetExtractor());
     }
 
 
-    public List<CustomerProfileOrderDto> findCustomersWithProfilesAndOrdersByEmail(String emailFilter) {
+    public List<CustomerProfileOrderDto> findCustomersWithProfilesAndOrdersByEmail(String email) {
         String sql = "SELECT c.customer_uuid, c.customer_name, " +
                 "p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, " +
                 "o.order_uuid, o.order_number " +
@@ -84,6 +95,6 @@ public class CustomerRepositoryJdbc {
                 "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id " +
                 "WHERE p.email LIKE ?";
 
-        return jdbcTemplate.query(sql, new Object[]{"%" + emailFilter + "%"}, new CustomerProfileOrderRowMapper());
+        return jdbcTemplate.query(sql, new Object[]{"%" + email + "%"}, new CustomerProfileOrderResultSetExtractor());
     }
 }

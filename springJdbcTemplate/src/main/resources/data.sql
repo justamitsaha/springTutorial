@@ -53,19 +53,27 @@ INSERT INTO Customer (customer_uuid, customer_name) VALUES
 INSERT INTO Orders (order_uuid, order_number, customer_id) VALUES
 ('order1', '10001', 1),
 ('order2', '10002', 1),
-('order3', '10003', 2);
+('order3', '10003', 2),
+('order4', '10004', 2),
+('order5', '10005', 3),
+('order6', '10005', 3);
 
 INSERT INTO Payment (payment_uuid, payment_status, order_id) VALUES
 (1, 'SUCCESS', 'order1'),
 (2, 'FAILURE', 'order2'),
-(3, 'PROCESSING', 'order3');
+(3, 'PROCESSING', 'order3'),
+(4, 'SUCCESS', 'order4'),
+(5, 'FAILURE', 'order5'),
+(6, 'PROCESSING', 'order6');
 
 INSERT INTO Order_Product (order_uuid, product_uuid) VALUES
 ('order1', 1),
 ('order1', 2),
 ('order2', 3),
 ('order3', 4),
-('order3', 5);
+('order3', 5),
+('order4', 4),
+('order4', 5);
 
 INSERT INTO product_category (product_id, category_id) VALUES
 (1, 1),

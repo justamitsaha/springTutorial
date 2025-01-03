@@ -12,6 +12,16 @@ import java.util.List;
 
 public class CustomerProfileOrderRowMapper implements RowMapper<CustomerProfileOrderDto> {
 
+    /**
+     * Since we are joining customer with Order hence for same customer there will be multiple rs rows.
+     * To prevent multiple Customer being added only currentCustomer is null, If currentCustomer and
+     * if currentCustomer is null and customerUuid != lastCustomerUuid, then currentCustomer is added
+     * OrderDto is kept out of the check so that all orders of the customers is added in currentCustomer
+     * @param rs the {@code ResultSet} to map (pre-initialized for the current row)
+     * @param rowNum the number of the current row
+     * @return  com.saha.amit.dto.CustomerProfileOrderDto
+     * @throws SQLException in case of any Exception
+     */
     @Override
     public CustomerProfileOrderDto mapRow(ResultSet rs, int rowNum) throws SQLException {
         List<CustomerProfileOrderDto> customerList = new ArrayList<>();
@@ -43,6 +53,7 @@ public class CustomerProfileOrderRowMapper implements RowMapper<CustomerProfileO
                 lastCustomerUuid = customerUuid;
             }
 
+            //Below is kept out of the if statement so that multiple orders gets added
             String orderUuid = rs.getString("order_uuid");
             if (orderUuid != null) {
                 OrderDto orderDto = new OrderDto();

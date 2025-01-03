@@ -5,14 +5,10 @@ import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.CustomerProfileOrderDto;
 import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.repository.CustomerRepositoryJdbc;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.List;
@@ -34,7 +30,7 @@ public class ProfileRepositoryIntegrationTestStandAlone {
         CustomerDto customerDto = new CustomerDto("test@example.com", "Test User", "1234567890", "123 Street",
                 "City", "State", "12345");
         Long id = customerRepositoryJdbc.insertCustomer(customerDto);
-        ProfileDto fetchCustomer = customerRepositoryJdbc.findById(id);
+        ProfileDto fetchCustomer = customerRepositoryJdbc.findCustomerProfileById(id);
         assertEquals(fetchCustomer.getName(), customerDto.getName());
         assertEquals(fetchCustomer.getEmail(), customerDto.getEmail());
         assertEquals(fetchCustomer.getPhoneNumber(), customerDto.getPhoneNumber());

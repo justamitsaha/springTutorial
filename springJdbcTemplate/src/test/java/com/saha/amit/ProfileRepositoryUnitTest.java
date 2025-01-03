@@ -43,7 +43,7 @@ public class ProfileRepositoryUnitTest {
         when(jdbcTemplate.queryForObject(any(String.class), any(Object[].class), any(ProfileRowMapper.class)))
                 .thenReturn(expectedProfile);
 
-        ProfileDto actualProfile = customerRepositoryJdbc.findById(1L);
+        ProfileDto actualProfile = customerRepositoryJdbc.findCustomerProfileById(1L);
 
         assertEquals(expectedProfile, actualProfile);
     }
