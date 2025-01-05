@@ -102,15 +102,23 @@ INSERT INTO Orders (order_uuid, order_number, customer_id) VALUES
 ('order5', '10005', 2),
 ('order6', '10005', 3);
 
-SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number FROM Customer c INNER JOIN Profile p ON c.customer_uuid = p.profile_uuid INNER JOIN Orders o ON c.customer_uuid = o.customer_id;
+SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number
+FROM Customer c
+INNER JOIN Profile p ON c.customer_uuid = p.profile_uuid INNER JOIN Orders o ON c.customer_uuid = o.customer_id;
 
-SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number FROM Customer c LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid LEFT JOIN Orders o ON c.customer_uuid = o.customer_id;
+SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number
+FROM Customer c
+LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid LEFT JOIN Orders o ON c.customer_uuid = o.customer_id;
 
-SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number FROM Customer c RIGHT JOIN Orders o ON c.customer_uuid = o.customer_id LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid;
+SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number
+FROM Customer c
+RIGHT JOIN Orders o ON c.customer_uuid = o.customer_id LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid;
 
-SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number FROM Customer c LEFT JOIN Orders o ON c.customer_uuid = o.customer_id LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid 
+SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number
+FROM Customer c LEFT JOIN Orders o ON c.customer_uuid = o.customer_id LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid
 UNION 
-SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number FROM Orders o LEFT JOIN Customer c ON o.customer_id = c.customer_uuid LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid;
+SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number
+FROM Orders o LEFT JOIN Customer c ON o.customer_id = c.customer_uuid LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid;
 
 
 -- M:N
@@ -198,24 +206,32 @@ INSERT INTO Order_Product (order_uuid, product_uuid) VALUES
 ('order4', 4),
 ('order4', 6);
 
-SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price FROM Orders o 
-INNER JOIN Order_Product op ON o.order_uuid = op.order_uuid 
+SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price
+FROM Orders o
+INNER JOIN Order_Product op ON o.order_uuid = op.order_uuid
 INNER JOIN Product prod ON op.product_uuid = prod.product_uuid;
 
-SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price FROM Orders o 
-LEFT JOIN Order_Product op ON o.order_uuid = op.order_uuid 
+SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price
+FROM Orders o
+LEFT JOIN Order_Product op ON o.order_uuid = op.order_uuid
 LEFT JOIN Product prod ON op.product_uuid = prod.product_uuid;
 
+SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price
+FROM Orders o
+RIGHT JOIN Order_Product op ON o.order_uuid = op.order_uuid
+RIGHT JOIN Product prod ON op.product_uuid = prod.product_uuid;
 
-SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price FROM Product prod 
-RIGHT JOIN Order_Product op ON prod.product_uuid = op.product_uuid 
-RIGHT JOIN Orders o ON op.order_uuid = o.order_uuid;
-
-SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price FROM Orders o 
-LEFT JOIN Order_Product op ON o.order_uuid = op.order_uuid 
-LEFT JOIN Product prod ON op.product_uuid = prod.product_uuid 
-UNION 
-SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price FROM Product prod 
-LEFT JOIN Order_Product op ON prod.product_uuid = op.product_uuid 
+SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price
+FROM Orders o
+LEFT JOIN Order_Product op ON o.order_uuid = op.order_uuid
+LEFT JOIN Product prod ON op.product_uuid = prod.product_uuid
+UNION
+SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price
+FROM Product prod
+LEFT JOIN Order_Product op ON prod.product_uuid = op.product_uuid
 LEFT JOIN Orders o ON op.order_uuid = o.order_uuid;
+
+
+
+
 
