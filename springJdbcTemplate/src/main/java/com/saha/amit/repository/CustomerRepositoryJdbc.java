@@ -53,17 +53,22 @@ public class CustomerRepositoryJdbc {
 
         // Insert into Customer table using the generated profile_uuid
         String customerSql = "INSERT INTO Customer (customer_uuid, customer_name) VALUES (?, ?)";
-        if(jdbcTemplate.update(customerSql, profileUuid, customerDto.getName()) > 0)
-            return profileUuid;
-        else
-            return  -1L;
+        return (long) jdbcTemplate.update(customerSql, profileUuid, customerDto.getName());
     }
 
 
     public ProfileDto findCustomerProfileById(Long profileUuid) {
         String sql = "SELECT * FROM Profile WHERE profile_uuid = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{profileUuid}, new ProfileRowMapper());
+        return jdbcTemplate.queryForObject(sql, new ProfileRowMapper(), profileUuid);
     }
+
+    public List<ProfileDto> findCustomerWithNameAndEmail(String name, String email) {
+        String sql = "SELECT * FROM Profile WHERE UPPER(name) LIKE UPPER(?) AND UPPER(email) LIKE UPPER(?)";
+        String namePattern = "%" + name + "%";
+        String emailPattern = "%" + email + "%";
+        return jdbcTemplate.query(sql, new ProfileRowMapper(), namePattern, emailPattern);
+    }
+
 
     public List<CustomerProfileOrderDto> findAllCustomersWithProfilesAndOrders() {
         String sql = "SELECT c.customer_uuid, c.customer_name, " +
@@ -85,7 +90,7 @@ public class CustomerRepositoryJdbc {
                 "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id " +
                 "WHERE c.customer_uuid = ?";
 
-        return jdbcTemplate.query(sql, new Object[]{customerUuid}, new CustomerProfileOrderResultSetExtractor());
+        return jdbcTemplate.query(sql, new CustomerProfileOrderResultSetExtractor(), customerUuid);
     }
 
 
@@ -98,6 +103,6 @@ public class CustomerRepositoryJdbc {
                 "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id " +
                 "WHERE p.email LIKE ?";
 
-        return jdbcTemplate.query(sql, new Object[]{"%" + email + "%"}, new CustomerProfileOrderResultSetExtractor());
+        return jdbcTemplate.query(sql, new CustomerProfileOrderResultSetExtractor(), "%" + email + "%");
     }
 }

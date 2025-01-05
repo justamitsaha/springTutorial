@@ -1,7 +1,5 @@
 To Do
 Hash Map update
-CustomerRepositoryJdbc remove depricated methods and check other implementation
-Pass Multiple values to queries
 
 
 

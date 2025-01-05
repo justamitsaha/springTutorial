@@ -28,12 +28,17 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerRepositoryJdbc.findCustomerProfileById(profileUuid));
     }
 
-    @GetMapping("3/customers/orders")
+    @GetMapping("3/{name}/{email}")
+    public ResponseEntity<List<ProfileDto>> findCustomerWithNameAndEmail(@PathVariable String name,@PathVariable String email) {
+        return ResponseEntity.ok().body(customerRepositoryJdbc.findCustomerWithNameAndEmail(name,email));
+    }
+
+    @GetMapping("4/customers/orders")
     public ResponseEntity<List<CustomerProfileOrderDto>> findAllCustomersWithProfilesAndOrders(){
         return ResponseEntity.ok().body(customerRepositoryJdbc.findAllCustomersWithProfilesAndOrders());
     }
 
-    @GetMapping("4/customer/{email}")
+    @GetMapping("5/customer/{email}")
     public ResponseEntity<List<CustomerProfileOrderDto>> findCustomersWithProfilesAndOrdersByEmail(@PathVariable String email){
         return ResponseEntity.ok().body(customerRepositoryJdbc.findCustomersWithProfilesAndOrdersByEmail(email));
     }
