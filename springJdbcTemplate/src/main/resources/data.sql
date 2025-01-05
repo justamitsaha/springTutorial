@@ -23,8 +23,8 @@ INSERT INTO Product (name, price) VALUES
 ('Product10', 24.99);
 
 INSERT INTO Profile (email, name, phone_number, street, city, state, zip_code) VALUES
-('john.doe@yahoo.com', 'John Doe', '555-1234', '123 Main St', 'Anytown', 'Anystate', '12345'),
-('jane.doe@gmail.com', 'Jane Doe', '555-5678', '456 Elm St', 'Othertown', 'Otherstate', '67890'),
+('john.doe@yahoo.com', 'John Doe', '555-1234', '123 Main St', 'Any town', 'Any state', '12345'),
+('jane.doe@gmail.com', 'Jane Doe', '555-5678', '456 Elm St', 'Other town', 'Other state', '67890'),
 ('customer1@yahoo.com', 'Customer One', '555-0001', 'Street 1', 'City 1', 'State 1', '10001'),
 ('customer2@yahoo.com', 'Customer Two', '555-0002', 'Street 2', 'City 2', 'State 2', '10002'),
 ('customer3@yahoo.com', 'Customer Three', '555-0003', 'Street 3', 'City 3', 'State 3', '10003'),
@@ -55,16 +55,29 @@ INSERT INTO Orders (order_uuid, order_number, customer_id) VALUES
 ('order2', '10002', 1),
 ('order3', '10003', 2),
 ('order4', '10004', 2),
-('order5', '10005', 3),
-('order6', '10005', 3);
+('order5', '10005', 2),
+('order6', '10005', 3);     -- order without payment(Payment) and product(Order_Product)
+--('order7', '10001', 2),
+--('order8', '10002', 3),
+--('order9', '10003', 3),
+--('order10', '10004', 4),
+--('order12', '10005', 5),
+--('order13', '10005', 6);
 
 INSERT INTO Payment (payment_uuid, payment_status, order_id) VALUES
 (1, 'SUCCESS', 'order1'),
 (2, 'FAILURE', 'order2'),
 (3, 'PROCESSING', 'order3'),
 (4, 'SUCCESS', 'order4'),
-(5, 'FAILURE', 'order5'),
-(6, 'PROCESSING', 'order6');
+(5, 'FAILURE', 'order5');
+--(6, 'PROCESSING', 'order6'),
+--(7, 'PROCESSING', 'order7'),
+--(8, 'PROCESSING', 'order8'),
+--(9, 'PROCESSING', 'order9'),
+--(10, 'PROCESSING', 'order10'),
+--(11, 'PROCESSING', 'order11'),
+--(12, 'PROCESSING', 'order12'),
+--(13, 'PROCESSING', 'order13');
 
 INSERT INTO Order_Product (order_uuid, product_uuid) VALUES
 ('order1', 1),
@@ -73,7 +86,7 @@ INSERT INTO Order_Product (order_uuid, product_uuid) VALUES
 ('order3', 4),
 ('order3', 5),
 ('order4', 4),
-('order4', 5);
+('order4', 6);
 
 INSERT INTO product_category (product_id, category_id) VALUES
 (1, 1),

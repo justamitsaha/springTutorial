@@ -5,7 +5,6 @@ import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.CustomerProfileOrderDto;
 import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.mapper.CustomerProfileOrderResultSetExtractor;
-import com.saha.amit.mapper.CustomerProfileOrderRowMapper;
 import com.saha.amit.mapper.ProfileRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,7 +21,11 @@ import java.util.Objects;
 public class CustomerRepositoryJdbc {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+
+    public CustomerRepositoryJdbc(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
 
     public Long insertCustomer(CustomerDto customerDto) {

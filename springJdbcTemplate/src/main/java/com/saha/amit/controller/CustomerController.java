@@ -5,8 +5,6 @@ import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.CustomerProfileOrderDto;
 import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.repository.CustomerRepositoryJdbc;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("customer")
 public class CustomerController {
-
-    private final Log log = LogFactory.getLog(CustomerController.class);
 
     @Autowired
     CustomerRepositoryJdbc customerRepositoryJdbc;
