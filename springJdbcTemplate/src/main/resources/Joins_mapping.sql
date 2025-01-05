@@ -40,16 +40,22 @@ INSERT INTO Profile (email, name, phone_number, street, city, state, zip_code) V
 
 INSERT INTO Customer (customer_uuid, customer_name) VALUES(1, 'John Doe'),(2, 'Jane Doe'),(3, 'Customer One'),(4, 'Customer Two');
 
+-- No difference in any join since both sides are mapped with a keys
 
-SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code FROM Customer c INNER JOIN Profile p ON c.customer_uuid = p.profile_uuid;
+SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code
+FROM Customer c INNER JOIN Profile p ON c.customer_uuid = p.profile_uuid;
 
-SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code FROM Customer c LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid;
+SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code
+FROM Customer c LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid;
 
-SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code FROM Customer c RIGHT JOIN Profile p ON c.customer_uuid = p.profile_uuid;
+SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code
+FROM Customer c RIGHT JOIN Profile p ON c.customer_uuid = p.profile_uuid;
 
-SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code FROM Customer c LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid 
+SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code
+FROM Customer c LEFT JOIN Profile p ON c.customer_uuid = p.profile_uuid
 UNION 
-SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code FROM Customer c RIGHT JOIN Profile p ON c.customer_uuid = p.profile_uuid;
+SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code
+FROM Customer c RIGHT JOIN Profile p ON c.customer_uuid = p.profile_uuid;
 
 -- 1: N mapping
 
@@ -102,6 +108,7 @@ INSERT INTO Orders (order_uuid, order_number, customer_id) VALUES
 ('order5', '10005', 2),
 ('order6', '10005', 3);
 
+ -- Can see full join and Left join , Right join we can't see as Orders can't exist without customers
 SELECT c.customer_uuid, c.customer_name, p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, o.order_uuid, o.order_number
 FROM Customer c
 INNER JOIN Profile p ON c.customer_uuid = p.profile_uuid INNER JOIN Orders o ON c.customer_uuid = o.customer_id;
