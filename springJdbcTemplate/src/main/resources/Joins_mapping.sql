@@ -234,9 +234,9 @@ LEFT JOIN Order_Product op ON o.order_uuid = op.order_uuid
 LEFT JOIN Product prod ON op.product_uuid = prod.product_uuid
 UNION
 SELECT o.order_uuid AS order_id, o.order_number, o.customer_id, prod.product_uuid, prod.name AS product_name, prod.price
-FROM Product prod
-LEFT JOIN Order_Product op ON prod.product_uuid = op.product_uuid
-LEFT JOIN Orders o ON op.order_uuid = o.order_uuid;
+FROM Orders o
+RIGHT JOIN Order_Product op ON o.order_uuid = op.order_uuid
+RIGHT JOIN Product prod ON op.product_uuid = prod.product_uuid;
 
 
 
