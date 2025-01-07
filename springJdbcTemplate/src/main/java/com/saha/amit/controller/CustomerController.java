@@ -5,6 +5,9 @@ import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.CustomerProfileOrderDto;
 import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.repository.CustomerRepositoryJdbc;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,22 +26,38 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerRepositoryJdbc.insertCustomer(customerDto));
     }
 
+
     @GetMapping("2/{profileUuid}")
     public ResponseEntity<ProfileDto> findCustomerProfileById(@PathVariable Long profileUuid) {
         return ResponseEntity.ok().body(customerRepositoryJdbc.findCustomerProfileById(profileUuid));
     }
 
+    @Operation(
+            summary = "Find customers by name and email",
+            description = "Fetches a list of customers with the specified name and email",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "List of matching customers"),
+                    @ApiResponse(responseCode = "400", description = "Invalid input")
+            }
+    )
     @GetMapping("3/{name}/{email}")
-    public ResponseEntity<List<ProfileDto>> findCustomerWithNameAndEmail(@PathVariable String name,@PathVariable String email) {
+    public ResponseEntity<List<ProfileDto>> findCustomerWithNameAndEmail(
+            @Parameter(description = "Name of the customer", example = "customer") @PathVariable String name,
+            @Parameter(description = "Email of the customer", example = "Customer") @PathVariable String email) {
         return ResponseEntity.ok().body(customerRepositoryJdbc.findCustomerWithNameAndEmail(name,email));
     }
 
-    @GetMapping("4/customers/orders")
+    @GetMapping("4/orders")
     public ResponseEntity<List<CustomerProfileOrderDto>> findAllCustomersWithProfilesAndOrders(){
         return ResponseEntity.ok().body(customerRepositoryJdbc.findAllCustomersWithProfilesAndOrders());
     }
 
-    @GetMapping("5/customer/{email}")
+    @GetMapping("5/orders/{profileUuid}")
+    public ResponseEntity<List<CustomerProfileOrderDto>> findCustomersWithProfilesAndOrdersByCustomerUuid(Long customerUuid){
+        return ResponseEntity.ok().body(customerRepositoryJdbc.findCustomersWithProfilesAndOrdersByCustomerUuid(customerUuid));
+    }
+
+    @GetMapping("6/{email}")
     public ResponseEntity<List<CustomerProfileOrderDto>> findCustomersWithProfilesAndOrdersByEmail(@PathVariable String email){
         return ResponseEntity.ok().body(customerRepositoryJdbc.findCustomersWithProfilesAndOrdersByEmail(email));
     }

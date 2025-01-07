@@ -77,7 +77,6 @@ public class CustomerRepositoryJdbc {
                 "FROM Customer c " +
                 "JOIN Profile p ON c.customer_uuid = p.profile_uuid " +
                 "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id";
-
         return jdbcTemplate.query(sql, new CustomerProfileOrderResultSetExtractor());
     }
 
@@ -102,7 +101,25 @@ public class CustomerRepositoryJdbc {
                 "JOIN Profile p ON c.customer_uuid = p.profile_uuid " +
                 "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id " +
                 "WHERE p.email LIKE ?";
-
         return jdbcTemplate.query(sql, new CustomerProfileOrderResultSetExtractor(), "%" + email + "%");
     }
+
+//    SELECT
+//    c.customer_name AS customer_name,
+//    p.email AS email,
+//    p.name AS profile_name,
+//    COUNT(o.order_uuid) AS order_count
+//    FROM
+//    Customer c
+//    JOIN
+//    Profile p ON c.customer_uuid = p.profile_uuid
+//    LEFT JOIN
+//    Orders o ON c.customer_uuid = o.customer_id
+//            WHERE
+//    c.customer_name = :customerName
+//    GROUP BY
+//    c.customer_uuid, c.customer_name, p.email, p.name
+//            HAVING
+//    COUNT(o.order_uuid) >= :n;
+
 }
