@@ -14,7 +14,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Repository
@@ -104,22 +106,31 @@ public class CustomerRepositoryJdbc {
         return jdbcTemplate.query(sql, new CustomerProfileOrderResultSetExtractor(), "%" + email + "%");
     }
 
+
+
+
+//    @Query(value = """
 //    SELECT
-//    c.customer_name AS customer_name,
-//    p.email AS email,
-//    p.name AS profile_name,
-//    COUNT(o.order_uuid) AS order_count
+//        c.customer_name AS customerName,
+//        p.email AS email,
+//        p.name AS profileName,
+//        COUNT(o.order_uuid) AS orderCount
 //    FROM
-//    Customer c
+//        Customer c
 //    JOIN
-//    Profile p ON c.customer_uuid = p.profile_uuid
+//        Profile p ON c.customer_uuid = p.profile_uuid
 //    LEFT JOIN
-//    Orders o ON c.customer_uuid = o.customer_id
-//            WHERE
-//    c.customer_name = :customerName
+//        Orders o ON c.customer_uuid = o.customer_id
+//    WHERE
+//        c.customer_name = :customerName
 //    GROUP BY
-//    c.customer_uuid, c.customer_name, p.email, p.name
-//            HAVING
-//    COUNT(o.order_uuid) >= :n;
+//        c.customer_uuid, c.customer_name, p.email, p.name
+//    HAVING
+//        COUNT(o.order_uuid) >= :n
+//""", nativeQuery = true)
+//    List<CustomerOrderInfo> findCustomersWithOrders(
+//            @Param("customerName") String customerName,
+//            @Param("n") int n
+//    );
 
 }

@@ -14,6 +14,7 @@ import java.util.List;
 public class CustomerProfileOrderDto {
     private Long customerUuid;
     private String customerName;
+    private int orderCount;
     private ProfileDto profile;
     private List<OrderDto> orders;
 }
