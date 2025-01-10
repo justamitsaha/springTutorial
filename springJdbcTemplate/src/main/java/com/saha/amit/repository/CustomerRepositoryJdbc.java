@@ -107,30 +107,20 @@ public class CustomerRepositoryJdbc {
     }
 
 
-
-
-//    @Query(value = """
-//    SELECT
-//        c.customer_name AS customerName,
-//        p.email AS email,
-//        p.name AS profileName,
-//        COUNT(o.order_uuid) AS orderCount
-//    FROM
-//        Customer c
-//    JOIN
-//        Profile p ON c.customer_uuid = p.profile_uuid
-//    LEFT JOIN
-//        Orders o ON c.customer_uuid = o.customer_id
-//    WHERE
-//        c.customer_name = :customerName
-//    GROUP BY
-//        c.customer_uuid, c.customer_name, p.email, p.name
-//    HAVING
-//        COUNT(o.order_uuid) >= :n
-//""", nativeQuery = true)
-//    List<CustomerOrderInfo> findCustomersWithOrders(
-//            @Param("customerName") String customerName,
-//            @Param("n") int n
-//    );
+    public List<CustomerProfileOrderDto> findCustomersWithProfilesAndOrdersNameAndCount(String name, int count) {
+        String sql = "WITH RankedOrders AS (\n" +
+                "    SELECT c.customer_uuid AS customer_uuid, c.customer_name AS customer_name, p.profile_uuid AS profile_uuid, p.email AS email, p.name AS profile_name,\n" +
+                "     p.phone_number AS phone_number, p.street AS street, p.city AS city, p.state AS state, p.zip_code AS zip_code, COUNT(o.order_uuid)\n" +
+                "     OVER (PARTITION BY c.customer_uuid) AS order_count, o.order_uuid AS order_uuid, o.order_number AS order_number\n" +
+                "    FROM Customer c\n" +
+                "    JOIN Profile p ON c.customer_uuid = p.profile_uuid\n" +
+                "    LEFT JOIN Orders o ON c.customer_uuid = o.customer_id\n" +
+                "    WHERE c.customer_name LIKE ?\n" +
+                ")\n" +
+                "SELECT customer_uuid, customer_name, profile_uuid, email, profile_name, phone_number, street, city, state, zip_code, order_count, order_uuid, order_number\n" +
+                "FROM RankedOrders WHERE order_count >= ?";
+        String namePattern = "%" + name + "%";
+        return jdbcTemplate.query(sql, new CustomerProfileOrderResultSetExtractor(), name, count);
+    }
 
 }

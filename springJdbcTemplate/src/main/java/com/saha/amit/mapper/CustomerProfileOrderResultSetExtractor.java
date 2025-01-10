@@ -5,6 +5,7 @@ import com.saha.amit.dto.OrderDto;
 import com.saha.amit.dto.ProfileDto;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,15 +15,6 @@ import java.util.Map;
 
 public class CustomerProfileOrderResultSetExtractor implements ResultSetExtractor<List<CustomerProfileOrderDto>> {
 
-    /**
-     * Since we are joining customer with Order hence for same customer there will be multiple rs rows.
-     * To prevent multiple Customer being added data is added to Map to prevent Duplicate customer being added
-     * @param rs the ResultSet to extract data from. Implementations should
-     * not close this: it will be closed by the calling JdbcTemplate.
-     * @return com.saha.amit.dto.CustomerProfileOrderDto
-     * @throws SQLException in case of any Exception
-     * @throws DataAccessException in case of any Exception
-     */
     @Override
     public List<CustomerProfileOrderDto> extractData(ResultSet rs) throws SQLException, DataAccessException {
         Map<Long, CustomerProfileOrderDto> customerMap = new HashMap<>();
