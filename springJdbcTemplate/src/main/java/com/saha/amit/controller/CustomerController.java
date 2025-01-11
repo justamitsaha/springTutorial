@@ -23,7 +23,7 @@ public class CustomerController {
 
     @Operation(
             summary = "Save customer",
-            description = "Fetches a list of customers with the specified name and email",
+            description = "Enter Name more than 20 character to see error and @Transactional e.g. Character Assassination ",
             responses = {
                     @ApiResponse(responseCode = "200", description = "List of matching customers"),
                     @ApiResponse(responseCode = "400", description = "Invalid input")
@@ -66,7 +66,7 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerRepositoryJdbc.findCustomersWithProfilesAndOrdersByEmail(email));
     }
 
-    @Operation(summary = "CUSTOMER + PROFILE + LEFT JOIN ORDERS WHERE CUSTOMER_ID = AND EMAIL LIKE")
+    @Operation(summary = "CUSTOMER + PROFILE + LEFT JOIN ORDERS WHERE CUSTOMER_ID = AND COUNT GREATER THAN")
     @GetMapping("7/{count}/{name}")
     public ResponseEntity<List<CustomerProfileOrderDto>> findCustomersWithProfilesAndOrdersNameAndCount(
             @Parameter(description = "Name of the customer", example = "customer") @PathVariable String name,

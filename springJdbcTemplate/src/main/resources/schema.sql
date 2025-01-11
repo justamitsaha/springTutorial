@@ -27,7 +27,7 @@ CREATE TABLE Profile (
 
 CREATE TABLE Customer (
     customer_uuid BIGINT AUTO_INCREMENT PRIMARY KEY,
-    customer_name VARCHAR(255) NOT NULL,
+    customer_name VARCHAR(20) NOT NULL,
     CONSTRAINT fk_profile FOREIGN KEY (customer_uuid) REFERENCES Profile(profile_uuid) ON DELETE CASCADE
 );
 

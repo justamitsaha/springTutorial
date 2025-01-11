@@ -4,19 +4,20 @@ package com.saha.amit.repository;
 import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.CustomerProfileOrderDto;
 import com.saha.amit.dto.ProfileDto;
+import com.saha.amit.mapper.CustomerProfileOrderCountResultSetExtractor;
 import com.saha.amit.mapper.CustomerProfileOrderResultSetExtractor;
 import com.saha.amit.mapper.ProfileRowMapper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.*;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Repository
@@ -25,37 +26,39 @@ public class CustomerRepositoryJdbc {
     @Autowired
     private final JdbcTemplate jdbcTemplate;
 
+    Log log = LogFactory.getLog(CustomerRepositoryJdbc.class);
     public CustomerRepositoryJdbc(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
 
+    @Transactional
     public Long insertCustomer(CustomerDto customerDto) {
         // Insert into Profile table
         String profileSql = "INSERT INTO Profile (email, name, phone_number, street, city, state, zip_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps = connection.prepareStatement(profileSql, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, customerDto.getEmail());
-                ps.setString(2, customerDto.getName());
-                ps.setString(3, customerDto.getPhoneNumber());
-                ps.setString(4, customerDto.getStreet());
-                ps.setString(5, customerDto.getCity());
-                ps.setString(6, customerDto.getState());
-                ps.setString(7, customerDto.getZipCode());
-                return ps;
-            }
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(profileSql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, customerDto.getEmail());
+            ps.setString(2, customerDto.getName());
+            ps.setString(3, customerDto.getPhoneNumber());
+            ps.setString(4, customerDto.getStreet());
+            ps.setString(5, customerDto.getCity());
+            ps.setString(6, customerDto.getState());
+            ps.setString(7, customerDto.getZipCode());
+            return ps;
         }, keyHolder);
 
         // Retrieve the generated profile_uuid
         Long profileUuid = Objects.requireNonNull(keyHolder.getKey()).longValue();
+        log.info("Profile UUID" +profileUuid);
 
         // Insert into Customer table using the generated profile_uuid
         String customerSql = "INSERT INTO Customer (customer_uuid, customer_name) VALUES (?, ?)";
-        return (long) jdbcTemplate.update(customerSql, profileUuid, customerDto.getName());
+        int customerUUid = jdbcTemplate.update(customerSql, profileUuid, customerDto.getName());
+        log.info("Customer UUID" +customerUUid);
+        return (long) profileUuid;
     }
 
 
@@ -102,25 +105,26 @@ public class CustomerRepositoryJdbc {
                 "FROM Customer c " +
                 "JOIN Profile p ON c.customer_uuid = p.profile_uuid " +
                 "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id " +
-                "WHERE p.email LIKE ?";
+                "WHERE UPPER(p.email) LIKE UPPER(?)";
         return jdbcTemplate.query(sql, new CustomerProfileOrderResultSetExtractor(), "%" + email + "%");
     }
 
 
     public List<CustomerProfileOrderDto> findCustomersWithProfilesAndOrdersNameAndCount(String name, int count) {
-        String sql = "WITH RankedOrders AS (\n" +
-                "    SELECT c.customer_uuid AS customer_uuid, c.customer_name AS customer_name, p.profile_uuid AS profile_uuid, p.email AS email, p.name AS profile_name,\n" +
-                "     p.phone_number AS phone_number, p.street AS street, p.city AS city, p.state AS state, p.zip_code AS zip_code, COUNT(o.order_uuid)\n" +
-                "     OVER (PARTITION BY c.customer_uuid) AS order_count, o.order_uuid AS order_uuid, o.order_number AS order_number\n" +
-                "    FROM Customer c\n" +
-                "    JOIN Profile p ON c.customer_uuid = p.profile_uuid\n" +
-                "    LEFT JOIN Orders o ON c.customer_uuid = o.customer_id\n" +
-                "    WHERE c.customer_name LIKE ?\n" +
-                ")\n" +
-                "SELECT customer_uuid, customer_name, profile_uuid, email, profile_name, phone_number, street, city, state, zip_code, order_count, order_uuid, order_number\n" +
-                "FROM RankedOrders WHERE order_count >= ?";
+        String sql = """
+                WITH RankedOrders AS (
+                    SELECT c.customer_uuid AS customer_uuid, c.customer_name AS customer_name, p.profile_uuid AS profile_uuid, p.email AS email, p.name AS profile_name,
+                     p.phone_number AS phone_number, p.street AS street, p.city AS city, p.state AS state, p.zip_code AS zip_code, COUNT(o.order_uuid)
+                     OVER (PARTITION BY c.customer_uuid) AS order_count, o.order_uuid AS order_uuid, o.order_number AS order_number
+                    FROM Customer c
+                    JOIN Profile p ON c.customer_uuid = p.profile_uuid
+                    LEFT JOIN Orders o ON c.customer_uuid = o.customer_id
+                    WHERE UPPER(c.customer_name) LIKE UPPER(?)
+                )
+                SELECT customer_uuid, customer_name, profile_uuid, email, profile_name, phone_number, street, city, state, zip_code, order_count, order_uuid, order_number
+                FROM RankedOrders WHERE order_count >= ?""";
         String namePattern = "%" + name + "%";
-        return jdbcTemplate.query(sql, new CustomerProfileOrderResultSetExtractor(), name, count);
+        return jdbcTemplate.query(sql, new CustomerProfileOrderCountResultSetExtractor(), namePattern, count);
     }
 
 }
