@@ -62,7 +62,10 @@ CREATE TABLE Payment (
 CREATE TABLE Product (
     product_uuid BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
-    price DOUBLE
+    price DOUBLE,
+    -- created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_date DATE DEFAULT CURRENT_DATE,
+    modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Join table to manage the many-to-many relationship between Orders and Products.
