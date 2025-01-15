@@ -6,6 +6,7 @@ import com.saha.amit.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
@@ -17,7 +18,8 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @JdbcTest
-//@Sql(scripts = "classpath:test-schema.sql") // Load the schema for the test
+@Sql(scripts = "classpath:test-schema.sql")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ProductRepositoryIntegrationTest {
 
     @Autowired
@@ -28,10 +30,8 @@ public class ProductRepositoryIntegrationTest {
     @BeforeEach
     void setUp() {
         productRepository = new ProductRepository(jdbcTemplate);
-
-        // Insert sample categories for testing
-        //jdbcTemplate.update("INSERT INTO Category (name) VALUES (?)", "Electronics");
-        //jdbcTemplate.update("INSERT INTO Category (name) VALUES (?)", "Home Appliances");
+        jdbcTemplate.update("INSERT INTO Product (name, price) VALUES (?, ?)", "iPhone", 99999.99);
+        jdbcTemplate.update("INSERT INTO Product (name, price) VALUES (?, ?)", "Google Pixel", 74999.99);
     }
 
     @Test
@@ -83,8 +83,6 @@ public class ProductRepositoryIntegrationTest {
         productDto1.setProductUuid(2L);
         var products = Map.of(productDto.getProductUuid(),productDto, productDto1.getProductUuid(), productDto1);
         orderDto.setProducts(products);
-
         assertTrue(productRepository.createOrders(orderDto)> 0);
-
     }
 }
