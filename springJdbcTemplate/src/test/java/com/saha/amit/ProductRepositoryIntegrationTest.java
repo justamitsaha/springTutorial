@@ -3,6 +3,8 @@ package com.saha.amit;
 import com.saha.amit.dto.OrderDto;
 import com.saha.amit.dto.ProductDto;
 import com.saha.amit.repository.ProductRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class ProductRepositoryIntegrationTest {
     private JdbcTemplate jdbcTemplate;
 
     private ProductRepository productRepository;
+
+    Log log = LogFactory.getLog(ProductRepositoryIntegrationTest.class);
 
     @BeforeEach
     void setUp() {
@@ -72,8 +76,6 @@ public class ProductRepositoryIntegrationTest {
 
     @Test
     void testCreateOrders(){
-        OrderDto orderDto = new OrderDto();
-        orderDto.setOrderNumber(String.valueOf(new Random().nextInt(1000,9999)));
         ProductDto productDto = new ProductDto();
         productDto.setName("Product1");
         productDto.setProductUuid(1L);
@@ -81,8 +83,44 @@ public class ProductRepositoryIntegrationTest {
         ProductDto productDto1 = new ProductDto();
         productDto1.setName("Product2");
         productDto1.setProductUuid(2L);
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setOrderNumber(String.valueOf(new Random().nextInt(1000,9999)));
         var products = Map.of(productDto.getProductUuid(),productDto, productDto1.getProductUuid(), productDto1);
         orderDto.setProducts(products);
-        assertTrue(productRepository.createOrders(orderDto)> 0);
+
+        assertTrue(productRepository.createOrders(orderDto, 1)> 0);
+    }
+
+    @Test
+    void testCreateOrderWithNoProduct(){
+        OrderDto orderDto = new OrderDto();
+        orderDto.setOrderNumber(String.valueOf(new Random().nextInt(1000,9999)));
+
+        Throwable throwable = assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.createOrders(orderDto, 1);
+        });
+        assertEquals(throwable.getMessage(),AppConstants.NO_PRODUCT_EXCEPTION_MESSAGE);
+    }
+
+    @Test
+    void testCreateOrderWithInvalidProduct(){
+        ProductDto productDto = new ProductDto();
+        productDto.setName("Product1");
+        productDto.setProductUuid(3L);
+
+        ProductDto productDto1 = new ProductDto();
+        productDto1.setName("Product2");
+        productDto1.setProductUuid(5L);
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setOrderNumber(String.valueOf(new Random().nextInt(1000,9999)));
+        var products = Map.of(productDto.getProductUuid(),productDto, productDto1.getProductUuid(), productDto1);
+        orderDto.setProducts(products);
+
+        Throwable throwable = assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.createOrders(orderDto, 1);
+        });
+        assertEquals(throwable.getMessage(),AppConstants.INVALID_PRODUCT_EXCEPTION_MESSAGE);
     }
 }
