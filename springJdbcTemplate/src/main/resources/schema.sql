@@ -79,6 +79,7 @@ CREATE TABLE Product (
     price DOUBLE,
     -- created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_date DATE DEFAULT CURRENT_DATE,
+
     modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

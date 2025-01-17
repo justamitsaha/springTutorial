@@ -57,13 +57,13 @@ INSERT INTO Orders (order_uuid, order_number, customer_id) VALUES
 ('order4', '10004', 2),
 ('order5', '10005', 2),
 ('order6', '10005', 3),
-('order7', '10006', 2),
-('order8', '10006', 3),
-('order9', '10006', 3),
-('order10', '10009', 4),
-('order11', '10010', 5),        -- order with no products
-('order12', '10011', 6),        -- order with no products
-('order13', '10012', 6);        -- order with no products
+('order7', '10007', 2),
+('order8', '10008', 3),
+('order9', '10009', 3),
+('order10', '10010', 4),
+('order11', '10011', 5),        -- order with no products
+('order12', '10012', 6),        -- order with no products
+('order13', '10013', 6);        -- order with no products
 
 INSERT INTO Payment (payment_uuid, payment_status, order_id) VALUES
 (1, 'SUCCESS', 'order1'),
