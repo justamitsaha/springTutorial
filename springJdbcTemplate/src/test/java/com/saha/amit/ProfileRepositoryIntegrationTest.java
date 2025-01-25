@@ -25,10 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 
+
+@SpringJUnitConfig
+@JdbcTest
+@Sql(scripts = "classpath:schema/test-schema.sql")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@SpringJUnitConfig
-//@JdbcTest
-//@Sql(scripts = "classpath:schema/test-schema.sql")
 public class ProfileRepositoryIntegrationTest {
 
     @Autowired
@@ -45,13 +46,13 @@ public class ProfileRepositoryIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        String profile = "DELETE FROM Profile WHERE EMAIL LIKE '%doe%'";
-        String customer = "DELETE FROM Customer WHERE customer_name LIKE '%Doe 1%'";
-        String order = "DELETE FROM ORDERS WHERE order_number IN ('10014', '10015', '10016') ";
-
-        log.info(jdbcTemplate.update(profile));
-        log.info(jdbcTemplate.update(customer));
-        log.info(jdbcTemplate.update(order));
+//        String profile = "DELETE FROM Profile WHERE EMAIL LIKE '%doe1%'";
+//        String customer = "DELETE FROM Customer WHERE customer_name LIKE '%Doe 1%'";
+//        String order = "DELETE FROM ORDERS WHERE order_number IN ('10014', '10015', '10016') ";
+//
+//        log.info(jdbcTemplate.update(profile));
+//        log.info(jdbcTemplate.update(customer));
+//        log.info(jdbcTemplate.update(order));
 
         CustomerDto customerDto = new CustomerDto("john.doe1@example.com", "John Doe 1", "555-1234", "123 Main St",
                 "Any town", "Any state", "12345");

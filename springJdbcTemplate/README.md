@@ -6,13 +6,18 @@ Run test standalone without running application without saving in DB
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
-    2> If the app is already running on H2 don't keep H2 again in test
-    3> H2 DB details will be picked from application.properties under test/resources directory
-    4> Schema will be loaded from test.schema.sql under test/resources directory
-    5> It will run even if the application is running or stopped and test with H2
+    2> 
+    3> If the app is already running on H2 don't keep H2 again in test
+    4> H2 DB details will be picked from application.properties under test/resources directory
+    5> Schema will be loaded from test.schema.sql under test/resources directory
+    6> It will run even if the application is running or stopped and test with H2
 
 Run tests with actual Database making inserts
 
-    1> 
+    1> Keep actual DB not H2
+    2> Remove H2 from dependecny
+    3> Keep below annotations in test class
+    @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+    public class ProfileRepositoryIntegrationTest 
 
 
