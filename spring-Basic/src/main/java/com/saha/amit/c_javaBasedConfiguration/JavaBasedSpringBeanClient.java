@@ -8,15 +8,19 @@ public class JavaBasedSpringBeanClient  {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
 
         Car car1 = applicationContext.getBean(Car.class);
-        Traveler traveler = (Traveler) applicationContext.getBean("travelerWithCar");
-        traveler.startJourney();
-
         Car car2 = applicationContext.getBean(Car.class); // will not trigger constructor again
-        Traveler traveler2 = (Traveler) applicationContext.getBean("travelerWithCar");
-        traveler2.startJourney();
-
+        Bike bike1 = applicationContext.getBean(Bike.class);
+        Bike bike2 = applicationContext.getBean(Bike.class); // will not trigger constructor again
         Vehicle car0 = new Car(); // Will trigger constructor again
         new Traveler(car0).startJourney();
+
+        Traveler traveler = (Traveler) applicationContext.getBean("travelerWithCar");
+        traveler.startJourney();
+        Traveler traveler1 = (Traveler) applicationContext.getBean("travelerWithCar");
+        traveler1.startJourney();
+        Traveler traveler2 = (Traveler) applicationContext.getBean("travelerWithBike");
+        traveler2.startJourney();
+
     }
 }
 

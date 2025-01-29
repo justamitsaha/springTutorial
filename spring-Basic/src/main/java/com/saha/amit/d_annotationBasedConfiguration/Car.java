@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 @Component("car")
 @Primary
 public class Car implements Vehicle {
-    static int milesTravelled = 0;
+    static int instanceCount = 0;
 
     public Car() {
-        milesTravelled++;
-        System.out.println("Car mileage " + milesTravelled);
+        instanceCount++;
+        System.out.println("Car instance count " + instanceCount);
     }
 
     @Override

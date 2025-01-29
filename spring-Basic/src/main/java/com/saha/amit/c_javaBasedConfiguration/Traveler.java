@@ -12,6 +12,7 @@ public class Traveler {
 
 
     public void startJourney(){
+        System.out.println("Starting journey in "+vehicle.getClass());
         this.vehicle.move();
     }
 

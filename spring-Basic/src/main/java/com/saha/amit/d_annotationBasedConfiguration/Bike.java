@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 public class Bike implements Vehicle {
     @Override
     public void move(){
-        System.out.println("Travel in car");
+        System.out.println("Travel in bike");
     }
 }
 

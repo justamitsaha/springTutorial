@@ -9,16 +9,17 @@ public class AnnotationBasedSpringClient {
 
 
         Car car1 = applicationContext.getBean(Car.class);
+        Car car2 = applicationContext.getBean(Car.class);  // will not trigger constructor again
+
+
         Traveler traveler = applicationContext.getBean(Traveler.class);
         traveler.startJourney();
 
-
-        Car car2 = applicationContext.getBean(Car.class);  // will not trigger constructor again
         Traveler traveler2 = applicationContext.getBean(Traveler.class);
         traveler2.startJourney();
 
-
-        Vehicle car0 = new Car();  // Will trigger constructor again
-        new Traveler(car0).startJourney();
+        Traveler traveler3 = applicationContext.getBean(Traveler.class);
+        traveler3.setVehicle("car");        // Creating bean dynamically using factory method
+        traveler3.startJourney();
     }
 }

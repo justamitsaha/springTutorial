@@ -3,11 +3,11 @@ package com.saha.amit.c_javaBasedConfiguration;
 public class Car implements Vehicle {
 
 
-    static int milesTravelled = 0;
+    static int carInstanceCount = 0;
 
     public Car() {
-        milesTravelled++;
-        System.out.println("Car mileage " + milesTravelled);
+        carInstanceCount++;
+        System.out.println("Car instance count " + carInstanceCount);
     }
 
     @Override

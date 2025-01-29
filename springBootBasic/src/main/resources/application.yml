@@ -1,0 +1,46 @@
+# General configurations
+#logging:
+#  level:
+#    org:
+#      springframework: debug
+#    root: debug
+#debug: true
+
+spring:
+  profiles:
+    active: dev # Set the active profile to 'dev' or 'prod' here
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# Profile-specific configurations
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+user:
+  names: John Doe
+  ssn: 653156989
+  age: 40
+  address: 9674 Spencer Street, Apt 111, Torrance, California, 90503
+payment:
+  salary: 4200
+  message: " $ is the salary"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+user:
+  names: Jane Doe
+  ssn: 85657878
+  age: 38
+  address: 3654 Park-wood Boulevard, Apt 1313, Frisco, Texas, 75020
+payment:
+  salary: 4300
+  message: " $ is the salary"
