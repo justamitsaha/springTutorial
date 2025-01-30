@@ -20,7 +20,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @JdbcTest
-@Sql(scripts = "classpath:test-schema.sql")
+@Sql(scripts = "classpath:schema/test-schema.sql")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ProductRepositoryIntegrationTest {
 

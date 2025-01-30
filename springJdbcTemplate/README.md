@@ -16,7 +16,11 @@ Run tests with actual Database making inserts
 
     1> Keep actual DB not H2
     2> Remove H2 from dependecny
-    3> Keep below annotations in test class
+    3> Remove below from test class
+    @JdbcTest
+    @Sql(scripts = "classpath:schema/test-schema.sql")
+    @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+    4> Add below annotations in test class
     @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
     public class ProfileRepositoryIntegrationTest 
 
