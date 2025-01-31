@@ -1,8 +1,11 @@
 package com.saha.amit;
 
+import com.saha.amit.dto.ProductDto;
 import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.repository.CustomerRepositoryJdbc;
 import com.saha.amit.repository.JdbcTemplateRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +17,14 @@ import org.springframework.test.context.jdbc.Sql;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @JdbcTest
 //@Sql(scripts = "classpath:test-schema.sql")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JdbcTemplateRepositoryIntegrationTest {
+
+    Log log = LogFactory.getLog(JdbcTemplateRepositoryIntegrationTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -61,6 +67,18 @@ public class JdbcTemplateRepositoryIntegrationTest {
         ProfileDto profileDtoResult = customerRepositoryJdbc.findCustomerProfileById(1L);
         assertEquals(profileDto.getName(), profileDtoResult.getName());
         assertEquals(profileDto.getPhoneNumber(), profileDtoResult.getPhoneNumber());
+    }
+
+    @Test
+    void testGetAllProducts(){
+        List<ProductDto> productDtoList = jdbcTemplateRepository.getAllProducts();
+        assertTrue(productDtoList.size()>0);
+    }
+
+    @Test
+    void testProductName(){
+        List<String> productNames= jdbcTemplateRepository.productName();
+        productNames.forEach(log::info);
     }
 
 

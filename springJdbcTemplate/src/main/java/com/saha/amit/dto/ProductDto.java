@@ -2,15 +2,13 @@ package com.saha.amit.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@ToString
 @Getter
 @Setter
 @AllArgsConstructor

@@ -1,5 +1,6 @@
 package com.saha.amit.repository;
 
+import com.saha.amit.dto.ProductDto;
 import com.saha.amit.dto.ProfileDto;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,6 +73,26 @@ public class JdbcTemplateRepository {
             profileDto.setZipCode(rs.getString("zip_code"));
             return profileDto;
         }, profileUuid);
+    }
+
+    public List<ProductDto> getAllProducts(){
+        String sql = "SELECT * FROM Product";
+        List<ProductDto> products = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            ProductDto product = new ProductDto();
+            product.setProductUuid(rs.getLong("product_uuid"));
+            product.setName(rs.getString("name"));
+            product.setPrice(rs.getDouble("price"));
+            return product;
+        });
+
+        products.forEach(log::info);
+        return products;
+
+    }
+
+    public List<String> productName(){
+        String sql = "SELECT name FROM Product";
+        return jdbcTemplate.queryForList(sql, String.class);
     }
 
 
