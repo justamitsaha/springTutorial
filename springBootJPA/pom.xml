@@ -13,11 +13,16 @@
 
     <groupId>com.saha.amit</groupId>
     <artifactId>springBootJPA</artifactId>
+    <version>${project.version}</version>
+    <packaging>jar</packaging>
+    <name>springBootJPA</name>
+    <description>Basic introduction to JPA</description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.version>999</project.version>
     </properties>
 
     <dependencies>
@@ -103,6 +108,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>com.saha.amit.SpringBootJpaApplication</mainClass>
+                    <layout>JAR</layout>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
