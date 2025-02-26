@@ -15,7 +15,7 @@ COPY target/springJdbcTemplate-999.jar springJdbcTemplate-999.jar
 #execute the application
 ENTRYPOINT ["java","-jar","/springJdbcTemplate-999.jar"]
 
-# mvn clean install
+# mvn clean install -DskipTests
 # docker build . -t justamitsaha/springJdbcTemplate:v1
 # docker push justamitsaha/springJdbcTemplate:v1
 #docker run -p 8080:8080 justamitsaha/springJdbcTemplate:v1
