@@ -16,6 +16,6 @@ COPY target/springBootJPA-999.jar springBootJPA-999.jar
 ENTRYPOINT ["java","-jar","/springBootJPA-999.jar"]
 
 # mvn clean install
-# docker build . -t justamitsaha/springBootJPA:v1
-# docker push justamitsaha/springBootJPA:v1
-#docker run -p 8080:8080 justamitsaha/springBootJPA:v1
+# docker build . -t justamitsaha/spring-boot-jpa:v1
+# docker push justamitsaha/spring-boot-jpa:v1
+#docker run -d -p 8080:8080 justamitsaha/spring-boot-jpa:v1

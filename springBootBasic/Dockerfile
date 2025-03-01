@@ -16,6 +16,6 @@ COPY target/springBootBasic-999.jar springBootBasic-999.jar
 ENTRYPOINT ["java","-jar","/springBootBasic-999.jar"]
 
 # mvn clean install
-# docker build . -t justamitsaha/springBootBasic:v1
-# docker push justamitsaha/springBootBasic:v1
-#docker run -p 8080:8080 justamitsaha/springBootBasic:v1
+# docker build . -t justamitsaha/spring-boot-basic:v1
+# docker push justamitsaha/spring-boot-basic:v1
+# docker run -p 8080:8080 justamitsaha/spring-boot-basic:v1
