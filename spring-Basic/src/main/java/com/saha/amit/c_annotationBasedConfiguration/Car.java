@@ -1,4 +1,4 @@
-package com.saha.amit.d_annotationBasedConfiguration;
+package com.saha.amit.c_annotationBasedConfiguration;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,6 @@ public class Car implements Vehicle {
         instanceCount++;
         System.out.println("Car instance count " + instanceCount);
     }
-
     @Override
     public void move() {
         System.out.println("Travel in car");

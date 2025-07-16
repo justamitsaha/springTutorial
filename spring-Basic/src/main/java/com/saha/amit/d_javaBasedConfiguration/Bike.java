@@ -1,4 +1,4 @@
-package com.saha.amit.c_javaBasedConfiguration;
+package com.saha.amit.d_javaBasedConfiguration;
 
 public class Bike implements Vehicle {
 

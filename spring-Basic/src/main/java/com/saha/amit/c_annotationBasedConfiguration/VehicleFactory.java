@@ -1,4 +1,4 @@
-package com.saha.amit.d_annotationBasedConfiguration;
+package com.saha.amit.c_annotationBasedConfiguration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

@@ -1,11 +1,9 @@
-package com.saha.amit.d_annotationBasedConfiguration;
+package com.saha.amit.c_annotationBasedConfiguration;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-@ComponentScan(basePackages = "com.saha.amit.d_annotationBasedConfiguration")
+@ComponentScan(basePackages = "com.saha.amit.c_annotationBasedConfiguration")
 public class AppConfiguration {
-
 }
 
