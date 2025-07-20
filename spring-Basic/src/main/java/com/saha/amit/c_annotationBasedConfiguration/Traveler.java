@@ -18,12 +18,18 @@ public class Traveler {
     @Autowired
     private VehicleFactory factory;
 
-    public void setVehicle(String type) {
-        this.vehicle = factory.getVehicle(type);
-    }
 
     public void startJourney(){
         this.vehicle.move();
     }
+
+    /**
+     * @param type String will tell which type of bean to load Car/Bike
+     *             This method will set the dependency dynamically by passing Car/Bike
+     */
+    public void setVehicle(String type) {
+        this.vehicle = factory.getVehicle(type);
+    }
+
 }
 
