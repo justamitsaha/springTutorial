@@ -21,14 +21,7 @@ public class CustomerController {
     @Autowired
     CustomerRepositoryJdbc customerRepositoryJdbc;
 
-    @Operation(
-            summary = "Save customer",
-            description = "Enter Name more than 20 character to see error and @Transactional e.g. Character Assassination ",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "List of matching customers"),
-                    @ApiResponse(responseCode = "400", description = "Invalid input")
-            }
-    )
+    @Operation(summary = "Save customer")
     @PostMapping("1/save")
     public ResponseEntity<Long> insertUser(@RequestBody CustomerDto customerDto) {
         return ResponseEntity.ok().body(customerRepositoryJdbc.insertCustomer(customerDto));

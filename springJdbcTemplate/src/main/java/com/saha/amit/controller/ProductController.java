@@ -5,10 +5,7 @@ import com.saha.amit.repository.ProductRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -20,5 +17,21 @@ public class ProductController {
 
     Log log = LogFactory.getLog(ProductController.class);
 
+    @GetMapping("/getProductCount")
+    public Integer getProductCount(){
+        return  productRepository.getProductCount();
+    }
+
+
+    @GetMapping("/getProductNameByUuid/{productUuid}")
+    public String getProductNameByUuid(@PathVariable int productUuid){
+        return  productRepository.getProductNameByUuid(productUuid);
+    }
+
+
+    @GetMapping("/getProductByUuid/{productUuid}")
+    public ProductDto getProductByUuid(@PathVariable int productUuid){
+        return  productRepository.getProductByUuid(productUuid);
+    }
 
 }

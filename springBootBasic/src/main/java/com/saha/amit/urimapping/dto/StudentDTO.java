@@ -1,5 +1,6 @@
-package com.saha.amit.urimapping.bean;
+package com.saha.amit.urimapping.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -18,7 +19,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Student {
+@Schema(description = "Student Data Transfer Object")
+public class StudentDTO {
 
     @NotNull(message = "ID cannot be null")
     @Min(value = 1, message = "ID must be greater than 0")

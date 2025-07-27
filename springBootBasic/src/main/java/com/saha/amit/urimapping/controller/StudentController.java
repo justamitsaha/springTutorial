@@ -1,6 +1,6 @@
 package com.saha.amit.urimapping.controller;
 
-import com.saha.amit.urimapping.bean.Student;
+import com.saha.amit.urimapping.dto.StudentDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -32,8 +32,8 @@ public class StudentController {
                     @ApiResponse(responseCode = "404", description = "Student not found")
             }
     )
-    public ResponseEntity<Student> getStudentById(@PathVariable("id") int id) {
-        Student student = new Student(
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable("id") int id) {
+        StudentDTO studentDTO = new StudentDTO(
                 id,
                 "Ramesh",
                 "J",
@@ -41,7 +41,7 @@ public class StudentController {
                 LocalDate.of(1995, 8, 25),
                 new BigDecimal("1500.00")
         );
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(studentDTO);
     }
 
     /**
@@ -57,17 +57,17 @@ public class StudentController {
                     @ApiResponse(responseCode = "200", description = "Students retrieved successfully")
             }
     )
-    public ResponseEntity<List<Student>> getAllStudents() {
-        List<Student> students = new ArrayList<>();
-        students.add(new Student(1, "Ramesh", "J", "ramesh@example.com", LocalDate.of(1995, 8, 25), new BigDecimal("1500.00")));
-        students.add(new Student(2, "Suresh", "Kumar", "suresh@example.com", LocalDate.of(1998, 5, 15), new BigDecimal("1800.00")));
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
+        List<StudentDTO> students = new ArrayList<>();
+        students.add(new StudentDTO(1, "Ramesh", "J", "ramesh@example.com", LocalDate.of(1995, 8, 25), new BigDecimal("1500.00")));
+        students.add(new StudentDTO(2, "Suresh", "Kumar", "suresh@example.com", LocalDate.of(1998, 5, 15), new BigDecimal("1800.00")));
         return ResponseEntity.ok(students);
     }
 
     /**
      * Create a new student
      *
-     * @param student the student object to be created
+     * @param studentDTO the student object to be created
      * @return the created student
      */
     @PostMapping
@@ -79,15 +79,15 @@ public class StudentController {
                     @ApiResponse(responseCode = "400", description = "Validation error")
             }
     )
-    public ResponseEntity<Student> createStudent(@RequestBody @Valid Student student) {
-        return ResponseEntity.status(201).body(student);
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody @Valid StudentDTO studentDTO) {
+        return ResponseEntity.status(201).body(studentDTO);
     }
 
     /**
      * Update an existing student
      *
      * @param id      the student ID
-     * @param student the student details to be updated
+     * @param studentDTO the student details to be updated
      * @return the updated student
      */
     @PutMapping("/{id}")
@@ -99,9 +99,9 @@ public class StudentController {
                     @ApiResponse(responseCode = "404", description = "Student not found")
             }
     )
-    public ResponseEntity<Student> updateStudent(@PathVariable("id") int id, @RequestBody @Valid Student student) {
-        student.setId(id);
-        return ResponseEntity.ok(student);
+    public ResponseEntity<StudentDTO> updateStudent(@PathVariable("id") int id, @RequestBody @Valid StudentDTO studentDTO) {
+        studentDTO.setId(id);
+        return ResponseEntity.ok(studentDTO);
     }
 
     /**

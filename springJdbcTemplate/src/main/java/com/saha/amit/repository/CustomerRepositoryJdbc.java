@@ -99,13 +99,14 @@ public class CustomerRepositoryJdbc {
 
 
     public List<CustomerProfileOrderDto> findCustomersWithProfilesAndOrdersByEmail(String email) {
-        String sql = "SELECT c.customer_uuid, c.customer_name, " +
-                "p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, " +
-                "o.order_uuid, o.order_number " +
-                "FROM Customer c " +
-                "JOIN Profile p ON c.customer_uuid = p.profile_uuid " +
-                "LEFT JOIN Orders o ON c.customer_uuid = o.customer_id " +
-                "WHERE UPPER(p.email) LIKE UPPER(?)";
+        String sql = """
+                SELECT c.customer_uuid, c.customer_name, \
+                p.profile_uuid, p.email, p.name, p.phone_number, p.street, p.city, p.state, p.zip_code, \
+                o.order_uuid, o.order_number \
+                FROM Customer c \
+                JOIN Profile p ON c.customer_uuid = p.profile_uuid \
+                LEFT JOIN Orders o ON c.customer_uuid = o.customer_id \
+                WHERE UPPER(p.email) LIKE UPPER(?)""";
         return jdbcTemplate.query(sql, new CustomerProfileOrderResultSetExtractor(), "%" + email + "%");
     }
 

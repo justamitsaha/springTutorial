@@ -33,6 +33,21 @@ public class ProductRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public Integer getProductCount(){
+        String sql = "SELECT COUNT(*) FROM Product";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    public String getProductNameByUuid(int productUuid) {
+        String sql = "SELECT name FROM Product WHERE product_uuid = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{productUuid}, String.class);
+    }
+
+    public ProductDto getProductByUuid(int productUuid) {
+        String sql = "SELECT name FROM Product WHERE product_uuid = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{productUuid}, ProductDto.class);
+    }
+
     @Transactional
     public Long addProductWithCategories(String productName, double price, List<Long> categoryIds) {
         // Insert into Product table
