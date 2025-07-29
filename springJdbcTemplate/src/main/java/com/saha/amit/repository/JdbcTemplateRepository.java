@@ -26,13 +26,6 @@ public class JdbcTemplateRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Integer productCount() {
-        String sql = "SELECT COUNT(*) FROM Product";
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
-
-        log.info("Product count " + count);
-        return count;
-    }
 
     public Integer productCountInCategory(int categoryId) {
         String sql = """
