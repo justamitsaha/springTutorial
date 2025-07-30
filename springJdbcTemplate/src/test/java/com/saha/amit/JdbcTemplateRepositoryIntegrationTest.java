@@ -3,7 +3,6 @@ package com.saha.amit;
 import com.saha.amit.dto.ProductDto;
 import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.repository.CustomerRepositoryJdbc;
-import com.saha.amit.repository.JdbcTemplateRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 

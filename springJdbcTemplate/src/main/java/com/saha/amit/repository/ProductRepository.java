@@ -37,42 +37,42 @@ public class ProductRepository {
 
 
 
-    @Transactional
-    public Long addProductWithCategories(String productName, double price, List<Long> categoryIds) {
-        // Insert into Product table
-        String productSql = "INSERT INTO Product (name, price, created_date, modified_date) VALUES (?, ?, CURRENT_DATE, CURRENT_TIMESTAMP)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(productSql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, productName);
-            ps.setDouble(2, price);
-            return ps;
-        }, keyHolder);
-
-        // Retrieve the generated product_uuid
-        Map<String, Object> keys = keyHolder.getKeys();
-        if (keys == null || !keys.containsKey("PRODUCT_UUID")) {
-            throw new IllegalStateException("Failed to retrieve generated key for PRODUCT_UUID");
-        }
-        long productUuid = ((Number) keys.get("PRODUCT_UUID")).longValue();
-
-        /* Inserting in multiple queries
-        String joinTableSql = "INSERT INTO product_category (product_id, category_id) VALUES (?, ?)";
-        for (Long categoryId : categoryIds) {
-            jdbcTemplate.update(joinTableSql, productUuid, categoryId);
-        }*/
-
-        // Batch insert into product_category join table
-        String joinTableSql = "INSERT INTO product_category (product_id, category_id) VALUES (?, ?)";
-        jdbcTemplate.batchUpdate(joinTableSql, categoryIds, categoryIds.size(),
-                (ps, categoryId) -> {
-                    ps.setLong(1, productUuid);
-                    ps.setLong(2, categoryId);
-                });
-
-        return productUuid;
-    }
+//    @Transactional
+//    public Long addProductWithCategories(String productName, double price, List<Long> categoryIds) {
+//        // Insert into Product table
+//        String productSql = "INSERT INTO Product (name, price, created_date, modified_date) VALUES (?, ?, CURRENT_DATE, CURRENT_TIMESTAMP)";
+//        KeyHolder keyHolder = new GeneratedKeyHolder();
+//
+//        jdbcTemplate.update(connection -> {
+//            PreparedStatement ps = connection.prepareStatement(productSql, Statement.RETURN_GENERATED_KEYS);
+//            ps.setString(1, productName);
+//            ps.setDouble(2, price);
+//            return ps;
+//        }, keyHolder);
+//
+//        // Retrieve the generated product_uuid
+//        Map<String, Object> keys = keyHolder.getKeys();
+//        if (keys == null || !keys.containsKey("PRODUCT_UUID")) {
+//            throw new IllegalStateException("Failed to retrieve generated key for PRODUCT_UUID");
+//        }
+//        long productUuid = ((Number) keys.get("PRODUCT_UUID")).longValue();
+//
+//        /* Inserting in multiple queries
+//        String joinTableSql = "INSERT INTO product_category (product_id, category_id) VALUES (?, ?)";
+//        for (Long categoryId : categoryIds) {
+//            jdbcTemplate.update(joinTableSql, productUuid, categoryId);
+//        }*/
+//
+//        // Batch insert into product_category join table
+//        String joinTableSql = "INSERT INTO product_category (product_id, category_id) VALUES (?, ?)";
+//        jdbcTemplate.batchUpdate(joinTableSql, categoryIds, categoryIds.size(),
+//                (ps, categoryId) -> {
+//                    ps.setLong(1, productUuid);
+//                    ps.setLong(2, categoryId);
+//                });
+//
+//        return productUuid;
+//    }
 
 //    @Transactional
 //    public Integer createOrders(OrderDto orderDto){

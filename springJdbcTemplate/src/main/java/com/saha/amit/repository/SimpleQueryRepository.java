@@ -2,6 +2,7 @@ package com.saha.amit.repository;
 
 import com.saha.amit.dto.ProductDto;
 import com.saha.amit.dto.ProfileDto;
+import com.saha.amit.mapper.ProductDtoRowMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,30 +15,30 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class JdbcTemplateRepository {
-
+public class SimpleQueryRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    Log log = LogFactory.getLog(JdbcTemplateRepository.class);
+    Log log = LogFactory.getLog(ProductRepository.class);
 
     @Autowired
-    public JdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
+    public SimpleQueryRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public Integer getProductCount() {
+        String sql = "SELECT COUNT(*) FROM Product";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
 
-    public Integer productCountInCategory(int categoryId) {
-        String sql = """
-                SELECT COUNT(pc.product_id) AS product_count FROM Category c
-                LEFT JOIN product_category pc ON c.category_uuid = pc.category_id
-                WHERE c.category_uuid = ?
-                GROUP BY c.category_uuid, c.name;
-                """;
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, categoryId);
+    public String getProductNameByUuid(int productUuid) {
+        String sql = "SELECT name FROM Product WHERE product_uuid = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, productUuid);
+    }
 
-        log.info("count of product in category " + categoryId + " is " + count);
-        return categoryId;
+    public ProductDto getProductByUuid(int productUuid) {
+        String sql = "SELECT * FROM Product WHERE product_uuid = ?";
+        return jdbcTemplate.queryForObject(sql, new ProductDtoRowMapper(), productUuid);
     }
 
     public Integer productInProductId(List<Long> productIdList) {
@@ -75,18 +76,13 @@ public class JdbcTemplateRepository {
             product.setProductUuid(rs.getLong("product_uuid"));
             product.setName(rs.getString("name"));
             product.setPrice(rs.getDouble("price"));
+            product.setCreatedDate(rs.getDate("created_date").toLocalDate());
+            product.setModifiedDate(rs.getDate("modified_date").toLocalDate().atStartOfDay());
             return product;
         });
 
         products.forEach(log::info);
         return products;
-
     }
-
-    public List<String> productName(){
-        String sql = "SELECT name FROM Product";
-        return jdbcTemplate.queryForList(sql, String.class);
-    }
-
 
 }

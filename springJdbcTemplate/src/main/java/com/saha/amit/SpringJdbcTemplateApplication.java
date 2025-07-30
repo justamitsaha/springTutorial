@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.saha.amit")
 public class SpringJdbcTemplateApplication implements CommandLineRunner {
 
     private final Log log = LogFactory.getLog(SpringJdbcTemplateApplication.class);
