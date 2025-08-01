@@ -84,31 +84,31 @@ public class ProductRepository {
 //        return count;
 //    }
 
-    @Transactional
-    public Integer createOrders(OrderDto orderDto, long customerId) {
-        String productCheckCountSql = "SELECT count(*) FROM PRODUCT WHERE PRODUCT_UUID IN (:ids)";
-
-        // Extract product IDs from OrderDto
-        List<Long> productIdList = new ArrayList<>();
-        if (null != orderDto && null != orderDto.getProducts() && orderDto.getProducts().size() > 0)
-            orderDto.getProducts().forEach((integer, productDto) -> productIdList.add(integer));
-        else
-            throw new IllegalArgumentException(AppConstants.NO_PRODUCT_EXCEPTION_MESSAGE);
-
-        // Use NamedParameterJdbcTemplate
-        SqlParameterSource parameters = new MapSqlParameterSource("ids", productIdList);
-        NamedParameterJdbcTemplate namedJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
-
-        // Execute the query
-        Integer count = namedJdbcTemplate.queryForObject(productCheckCountSql, parameters, Integer.class);
-        if (!(null != count && count == productIdList.size())){
-            log.info("Product not found"+ count);
-            throw new IllegalArgumentException(AppConstants.INVALID_PRODUCT_EXCEPTION_MESSAGE);
-        }
-
-
-        String insertToOder = "INSERT INTO Orders (order_uuid, order_number, customer_id) values (?, ? , ?)";
-
-        return count;
-    }
+//    @Transactional
+//    public Integer createOrders(OrderDto orderDto, long customerId) {
+//        String productCheckCountSql = "SELECT count(*) FROM PRODUCT WHERE PRODUCT_UUID IN (:ids)";
+//
+//        // Extract product IDs from OrderDto
+//        List<Long> productIdList = new ArrayList<>();
+//        if (null != orderDto && null != orderDto.getProducts() && orderDto.getProducts().size() > 0)
+//            orderDto.getProducts().forEach((integer, productDto) -> productIdList.add(integer));
+//        else
+//            throw new IllegalArgumentException(AppConstants.NO_PRODUCT_EXCEPTION_MESSAGE);
+//
+//        // Use NamedParameterJdbcTemplate
+//        SqlParameterSource parameters = new MapSqlParameterSource("ids", productIdList);
+//        NamedParameterJdbcTemplate namedJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+//
+//        // Execute the query
+//        Integer count = namedJdbcTemplate.queryForObject(productCheckCountSql, parameters, Integer.class);
+//        if (!(null != count && count == productIdList.size())){
+//            log.info("Product not found"+ count);
+//            throw new IllegalArgumentException(AppConstants.INVALID_PRODUCT_EXCEPTION_MESSAGE);
+//        }
+//
+//
+//        String insertToOder = "INSERT INTO Orders (order_uuid, order_number, customer_id) values (?, ? , ?)";
+//
+//        return count;
+//    }
 }

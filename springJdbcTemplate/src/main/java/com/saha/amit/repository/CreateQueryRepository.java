@@ -104,8 +104,10 @@ public class CreateQueryRepository {
 
         // Extract product IDs from OrderDto
         List<Long> productIdList = new ArrayList<>();
-        if (null != orderDto && null != orderDto.getProducts() && orderDto.getProducts().size() > 0)
-            orderDto.getProducts().forEach((integer, productDto) -> productIdList.add(integer));
+        if (null != orderDto && null != orderDto.getProducts() && !orderDto.getProducts().isEmpty())
+            orderDto.getProducts().forEach(product -> {
+                productIdList.add(product.getProductUuid());
+            });
         else
             throw new IllegalArgumentException(AppConstants.NO_PRODUCT_EXCEPTION_MESSAGE);
 
