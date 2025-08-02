@@ -65,20 +65,20 @@ INSERT INTO Orders (order_uuid, order_number, customer_id) VALUES
 ('order12', '10012', 6),        -- order with no products
 ('order13', '10013', 6);        -- order with no products
 
-INSERT INTO Payment (payment_uuid, payment_status, order_id) VALUES
-(1, 'SUCCESS', 'order1'),
-(2, 'FAILURE', 'order2'),
-(3, 'PROCESSING', 'order3'),
-(4, 'SUCCESS', 'order4'),
-(5, 'FAILURE', 'order5'),
-(6, 'PROCESSING', 'order6'),
-(7, 'PROCESSING', 'order7'),
-(8, 'PROCESSING', 'order8'),
-(9, 'PROCESSING', 'order9'),
-(10, 'PROCESSING', 'order10'),
-(11, 'PROCESSING', 'order11'),
-(12, 'PROCESSING', 'order12'),
-(13, 'PROCESSING', 'order13');
+INSERT INTO Payment (payment_status, order_id) VALUES
+                                                   ('SUCCESS', 'order1'),
+                                                   ('FAILURE', 'order2'),
+                                                   ('PROCESSING', 'order3'),
+                                                   ('SUCCESS', 'order4'),
+                                                   ('FAILURE', 'order5'),
+                                                   ('PROCESSING', 'order6'),
+                                                   ('PROCESSING', 'order7'),
+                                                   ('PROCESSING', 'order8'),
+                                                   ('PROCESSING', 'order9'),
+                                                   ( 'PROCESSING', 'order10'),
+                                                   ( 'PROCESSING', 'order11'),
+                                                   ( 'PROCESSING', 'order12'),
+                                                   ( 'PROCESSING', 'order13');
 
 INSERT INTO Order_Product (order_uuid, product_uuid) VALUES
 ('order1', 1),('order1', 2),

@@ -19,7 +19,7 @@ public class SimpleQueryRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    Log log = LogFactory.getLog(ProductRepository.class);
+    Log log = LogFactory.getLog(SimpleQueryRepository.class);
 
     @Autowired
     public SimpleQueryRepository(JdbcTemplate jdbcTemplate) {

@@ -66,7 +66,7 @@ CREATE TABLE Payment (
     payment_uuid BIGINT AUTO_INCREMENT PRIMARY KEY,
     payment_status ENUM('SUCCESS', 'FAILURE', 'PROCESSING') NOT NULL,
     -- order_id CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci UNIQUE,
-    order_id VARCHAR(36) UNIQUE,
+    order_id VARCHAR(255) UNIQUE,
     CONSTRAINT fk_order_payment FOREIGN KEY (order_id) REFERENCES Orders(order_uuid) ON DELETE CASCADE
 );
 
