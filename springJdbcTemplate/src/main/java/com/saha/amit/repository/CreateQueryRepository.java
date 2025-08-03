@@ -18,14 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Repository
 public class CreateQueryRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    //Log log = LogFactory.getLog(CreateQueryRepository.class);
     private static final Logger logger = LoggerFactory.getLogger(CreateQueryRepository.class);
 
     public CreateQueryRepository(JdbcTemplate jdbcTemplate) {
@@ -52,12 +51,12 @@ public class CreateQueryRepository {
 
         // Retrieve the generated profile_uuid
         Long profileUuid = Objects.requireNonNull(keyHolder.getKey()).longValue();
-        logger.info("Profile UUID" + profileUuid);
+        logger.info("Profile UUID" +profileUuid);
 
         // Insert into Customer table using the generated profile_uuid
         String customerSql = "INSERT INTO Customer (customer_uuid, customer_name) VALUES (?, ?)";
         int customerUUid = jdbcTemplate.update(customerSql, profileUuid, customerDto.getName());
-        logger.info("Customer UUID" + customerUUid);
+        logger.info("Customer UUID" +customerUUid);
         return (long) profileUuid;
     }
 
@@ -114,7 +113,6 @@ public class CreateQueryRepository {
 
         return productUuid;
     }
-
 
     /**
      * Creates a new order for a given customer.
