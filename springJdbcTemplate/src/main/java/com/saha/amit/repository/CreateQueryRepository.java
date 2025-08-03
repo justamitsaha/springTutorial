@@ -19,11 +19,11 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.*;
 
+
 @Repository
 public class CreateQueryRepository {
 
     private final JdbcTemplate jdbcTemplate;
-
 
     private static final Logger logger = LoggerFactory.getLogger(CreateQueryRepository.class);
 
@@ -183,4 +183,5 @@ public class CreateQueryRepository {
         // Step 6: Return order UUID or ID for tracking
         return orderUuid;
     }
+
 }
