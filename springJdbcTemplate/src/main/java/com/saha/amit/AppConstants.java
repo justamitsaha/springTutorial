@@ -17,4 +17,8 @@ public class AppConstants {
             3. Retrieves the generated product UUID (primary key).
             4. Inserts entries into the `product_category` join table to associate the product with each given category ID.
             """;
+    public static final String CREATE_CUSTOMER_DESCRIPTION = """
+            Creates a new entry in the Profile table and then links it to a new Customer entry
+            The profile UUID is used as the primary key for the Customer. Returns the generated UUID.
+            """;
 }

@@ -6,6 +6,7 @@ import com.saha.amit.dto.OrderDto;
 import com.saha.amit.dto.ProductDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -33,32 +34,47 @@ public class CreateQueryRepository {
 
     @Transactional
     public Long insertCustomer(CustomerDto customerDto) {
-        // Insert into Profile table
-        String profileSql = "INSERT INTO Profile (email, name, phone_number, street, city, state, zip_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        try {
+            // Step 1: Insert into Profile
+            String profileSql = "INSERT INTO Profile (email, name, phone_number, street, city, state, zip_code) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(profileSql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, customerDto.getEmail());
-            ps.setString(2, customerDto.getName());
-            ps.setString(3, customerDto.getPhoneNumber());
-            ps.setString(4, customerDto.getStreet());
-            ps.setString(5, customerDto.getCity());
-            ps.setString(6, customerDto.getState());
-            ps.setString(7, customerDto.getZipCode());
-            return ps;
-        }, keyHolder);
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(profileSql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, customerDto.getEmail());
+                ps.setString(2, customerDto.getName());
+                ps.setString(3, customerDto.getPhoneNumber());
+                ps.setString(4, customerDto.getStreet());
+                ps.setString(5, customerDto.getCity());
+                ps.setString(6, customerDto.getState());
+                ps.setString(7, customerDto.getZipCode());
+                return ps;
+            }, keyHolder);
 
-        // Retrieve the generated profile_uuid
-        Long profileUuid = Objects.requireNonNull(keyHolder.getKey()).longValue();
-        logger.info("Profile UUID" +profileUuid);
+            // Step 2: Extract generated key
+            Number key = keyHolder.getKey();
+            if (key == null) {
+                logger.error("Profile UUID was not generated. Aborting.");
+                throw new IllegalStateException("Failed to generate Profile UUID");
+            }
+            Long profileUuid = key.longValue();
+            logger.info("Generated Profile UUID: {}", profileUuid);
 
-        // Insert into Customer table using the generated profile_uuid
-        String customerSql = "INSERT INTO Customer (customer_uuid, customer_name) VALUES (?, ?)";
-        int customerUUid = jdbcTemplate.update(customerSql, profileUuid, customerDto.getName());
-        logger.info("Customer UUID" +customerUUid);
-        return (long) profileUuid;
+            // Step 3: Insert into Customer
+            String customerSql = "INSERT INTO Customer (customer_uuid, customer_name) VALUES (?, ?)";
+            jdbcTemplate.update(customerSql, profileUuid, customerDto.getName());
+
+            return profileUuid;
+        } catch (DataAccessException dae) {
+            logger.error("Database error occurred while inserting customer: {}", dae.getMessage(), dae);
+            throw new RuntimeException("Error while inserting customer data", dae);
+        } catch (Exception ex) {
+            logger.error("Unexpected error occurred while inserting customer: {}", ex.getMessage(), ex);
+            throw ex;  // or wrap in a custom exception
+        }
     }
+
 
     /**
      * Adds a new product and links it to multiple categories.
