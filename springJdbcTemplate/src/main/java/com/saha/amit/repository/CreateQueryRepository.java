@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -25,11 +28,13 @@ import java.util.*;
 public class CreateQueryRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(CreateQueryRepository.class);
 
-    public CreateQueryRepository(JdbcTemplate jdbcTemplate) {
+    public CreateQueryRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.namedJdbcTemplate = namedJdbcTemplate;
     }
 
     @Transactional
@@ -126,6 +131,43 @@ public class CreateQueryRepository {
             logger.error("Please provide at least one product category id, {}", categoryIds);
             throw new IllegalStateException("Please provide at least one product category id");
         }
+
+        return productUuid;
+    }
+
+    @Transactional
+    public Long addProductWithCategories2(ProductDto productDto) {
+        productDto.setCreatedDate(LocalDate.now());
+        productDto.setModifiedDate(LocalDateTime.now());
+        // 1. Insert product and get generated product_uuid
+        String insertProductSql = """
+            INSERT INTO Product (name, price, created_date, modified_date)
+            VALUES (:name, :price, :createdDate, :modifiedDate)
+        """;
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        SqlParameterSource paramSource = new BeanPropertySqlParameterSource(productDto);
+
+        namedJdbcTemplate.update(insertProductSql, paramSource, keyHolder, new String[] { "product_uuid" });
+        Long productUuid = keyHolder.getKey().longValue();
+
+        // 2. Validate at least one category
+        if (productDto.getCategoryIds() == null || productDto.getCategoryIds() .isEmpty()) {
+            throw new IllegalArgumentException("At least one category ID must be provided.");
+        }
+
+        // 3. Prepare batch insert for product_category
+        String insertJoinSql = "INSERT INTO product_category (product_id, category_id) VALUES (:productId, :categoryId)";
+        List<Map<String, Object>> batchValues = new ArrayList<>();
+
+        for (Integer categoryId : productDto.getCategoryIds() ) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("productId", productUuid);
+            map.put("categoryId", categoryId);
+            batchValues.add(map);
+        }
+
+        namedJdbcTemplate.batchUpdate(insertJoinSql, batchValues.toArray(new Map[0]));
 
         return productUuid;
     }

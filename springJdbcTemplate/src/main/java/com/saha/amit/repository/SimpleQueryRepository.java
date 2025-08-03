@@ -6,6 +6,7 @@ import com.saha.amit.mapper.ProductDtoRowMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -71,6 +72,8 @@ public class SimpleQueryRepository {
 
     public List<ProductDto> getAllProducts(){
         String sql = "SELECT * FROM Product";
+
+        log.info("Using row mapper when table name and column names don't match");
         List<ProductDto> products = jdbcTemplate.query(sql, (rs, rowNum) -> {
             ProductDto product = new ProductDto();
             product.setProductUuid(rs.getLong("product_uuid"));
@@ -80,9 +83,17 @@ public class SimpleQueryRepository {
             product.setModifiedDate(rs.getDate("modified_date").toLocalDate().atStartOfDay());
             return product;
         });
-
         products.forEach(log::info);
         return products;
+
+        //or
+
+//        log.info("Using BeanPropertyRowMapper when table name and column names match");
+//        return jdbcTemplate.query(
+//                sql,
+//                new BeanPropertyRowMapper<>(ProductDto.class)
+//        );
+
     }
 
 }
