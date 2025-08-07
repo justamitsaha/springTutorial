@@ -30,7 +30,7 @@ public class CustomerController {
             description = AppConstants.GET_CUSTOMER_PROFILE_WITH_ID_DESCRIPTION)
     @GetMapping("1/profile/{id}")
     public ResponseEntity<CustomerDto> getCustomerProfile(@PathVariable Long id, @RequestParam(name = "key", required = false) Boolean flag) {
-        if (null != flag ? flag : new Random().nextBoolean()) {
+        if (null != flag ? flag : false) {
             log.info("Fetching Data with JPQL");
             Customer customer = customerService.findCustomersById(id);
             return ResponseEntity.ok().body(DataMapper.getCustomerProfileModelMapper(customer));
