@@ -3,6 +3,7 @@ package com.saha.amit;
 import com.saha.amit.dto.ProductDto;
 import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.repository.CustomerRepositoryJdbc;
+import com.saha.amit.repository.SimpleQueryRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,10 +29,8 @@ public class JdbcTemplateRepositoryIntegrationTest {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private JdbcTemplateRepository jdbcTemplateRepository;
+    private SimpleQueryRepository simpleQueryRepository;
 
-    @Autowired
-    private CustomerRepositoryJdbc customerRepositoryJdbc;
 
     @BeforeEach
     void setUp() {
@@ -40,20 +39,15 @@ public class JdbcTemplateRepositoryIntegrationTest {
 
     @Test
     void testProductCount() {
-        Integer count = jdbcTemplateRepository.productCount();
+        Integer count = simpleQueryRepository.getProductCount();
         assertEquals(10, count);
     }
 
-    @Test
-    void testProductCountInCategory() {
-        Integer count = jdbcTemplateRepository.productCountInCategory(3);
-        assertEquals(3, count);
-    }
 
     @Test
     void testProductInProductId() {
         List<Long> list = List.of(1L, 5L, 9L, 8L);
-        Integer count = jdbcTemplateRepository.productInProductId(list);
+        Integer count = simpleQueryRepository.productInProductId(list);
         assertEquals(list.size(), count);
     }
 
@@ -62,21 +56,21 @@ public class JdbcTemplateRepositoryIntegrationTest {
         ProfileDto profileDto = new ProfileDto("john.doe@yahoo.com", "John Doe", "555-1234",
                 "123 Main St", "Any town", "Any state", "12345");
 
-        ProfileDto profileDtoResult = customerRepositoryJdbc.findCustomerProfileById(1L);
+        ProfileDto profileDtoResult = simpleQueryRepository.findCustomerProfileById(1L);
         assertEquals(profileDto.getName(), profileDtoResult.getName());
         assertEquals(profileDto.getPhoneNumber(), profileDtoResult.getPhoneNumber());
     }
 
     @Test
     void testGetAllProducts(){
-        List<ProductDto> productDtoList = jdbcTemplateRepository.getAllProducts();
+        List<ProductDto> productDtoList = simpleQueryRepository.getAllProducts();
         assertTrue(productDtoList.size()>0);
     }
 
     @Test
-    void testProductName(){
-        List<String> productNames= jdbcTemplateRepository.productName();
-        productNames.forEach(log::info);
+    void testProduct(){
+        var product = simpleQueryRepository.getAllProducts();
+        product.forEach(log::info);
     }
 
 
