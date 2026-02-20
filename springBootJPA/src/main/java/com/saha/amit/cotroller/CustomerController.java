@@ -28,9 +28,9 @@ public class CustomerController {
     @Operation(
             summary = AppConstants.GET_CUSTOMER_PROFILE_WITH_ID_SUMMARY,
             description = AppConstants.GET_CUSTOMER_PROFILE_WITH_ID_DESCRIPTION)
-    @GetMapping("1/profile/{id}")
+    @GetMapping("5/profile/{id}")
     public ResponseEntity<CustomerDto> getCustomerProfile(@PathVariable Long id, @RequestParam(name = "key", required = false) Boolean flag) {
-        if (null != flag ? flag : false) {
+        if (null != flag ? flag : new Random().nextBoolean()) {
             log.info("Fetching Data with JPQL");
             Customer customer = customerService.findCustomersById(id);
             return ResponseEntity.ok().body(DataMapper.getCustomerProfileModelMapper(customer));
@@ -43,7 +43,7 @@ public class CustomerController {
     @Operation(
             summary = AppConstants.GET_CUSTOMER_PROFILE_ORDER_WITH_ID_SUMMARY,
             description = AppConstants.GET_CUSTOMER_PROFILE_ORDER_WITH_ID_DESCRIPTION)
-    @GetMapping("2/profileOrder/{id}")
+    @GetMapping("4/profileOrder/{id}")
     public ResponseEntity<CustomerDto> findCustomerProfileOrderDataNative(@PathVariable Long id, @RequestParam(name = "key", required = false) Boolean key) {
         if (null != key ? key : new Random().nextBoolean()) {
             log.info("Fetching Data with JPQL");
@@ -65,7 +65,7 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerDtoList);
     }
 
-    @GetMapping("4/moreThanThreeOrders")
+    @GetMapping("2/moreThanThreeOrders")
     public ResponseEntity<List<CustomerDto>> findCustomersWithMoreThanThreeOrders() {
         List<CustomerDto> customerDtoList = new ArrayList<>();
         customerService.findCustomersWithMoreThanThreeOrders().forEach(customer -> {
@@ -75,7 +75,7 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerDtoList);
     }
 
-    @GetMapping("5/moreThanThreeSuccessfulOrders")
+    @GetMapping("1/moreThanThreeSuccessfulOrders")
     public ResponseEntity<List<CustomerDto>> findCustomersWithMoreThanThreeSuccessfulOrders() {
         List<CustomerDto> customerDtoList = new ArrayList<>();
         customerService.findCustomersWithMoreThanThreeSuccessfulOrders().forEach(customer -> {
