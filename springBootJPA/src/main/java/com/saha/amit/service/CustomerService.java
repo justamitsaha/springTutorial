@@ -28,8 +28,20 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
+
+    /*
+    In this implementation we are not using default findById method provided by JPA instead we are using custom JPQL query. Reason
+        - Customer class is mapped with Profile as @OneToOne(fetch = FetchType.LAZY),
+        - Hence default method findById(id) will only fetch Customer first and when it encounters getProfile() then will fetch Customer,
+          in a 2nd query leading to multiple query which is inefficient
+        - If we make it eager then if in some scenarios we only need Customer it will still join and get Profile for e.g. we don't need Orders here
+          So we have kept it lazy, and it's not called.
+        - To see the differance make every thing EAGER and un-comment findById to see multiple un-necessary queries getting called in console.
+        - Thumb rule keep every thing LAZY by default, unless you are absolutely sure and use findById when you only need Customer
+     */
     public Customer findCustomersById(Long id){
         return customerRepository.findCustomersById(id);
+        //return customerRepository.findById(id).orElse(null);
     }
 
     public CustomerDto findCustomersByIdProjections(Long id){
