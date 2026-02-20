@@ -1,27 +1,59 @@
-Run test standalone without running application without saving in DB
+# Spring JdbcTemplate: Direct SQL Interaction
 
-    1> Make Sure H2 DB is added as dependency. If some other database is already present then add H2 as test dependency
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
-    2> 
-    3> If the app is already running on H2 don't keep H2 again in test
-    4> H2 DB details will be picked from application.properties under test/resources directory
-    5> Schema will be loaded from test.schema.sql under test/resources directory
-    6> It will run even if the application is running or stopped and test with H2
+This module explores using **Spring's `JdbcTemplate`** for low-level database interaction without the overhead of a full ORM like JPA. It focuses on writing manual SQL and mapping results to Java objects.
 
-Run tests with actual Database making inserts
+## Key Features
+- **Raw SQL Control:** Full power of SQL including CTEs and complex joins.
+- **Row Mapping:** Manual mapping using `RowMapper` and `ResultSetExtractor`.
+- **Database Schema Management:** Automatic initialization via `schema.sql` and `data.sql`.
+- **Transaction Management:** Handled by Spring's `@Repository`.
 
-    1> Keep actual DB not H2
-    2> Remove H2 from dependecny
-    3> Remove below from test class
-    @JdbcTest
-    @Sql(scripts = "classpath:schema/test-schema.sql")
-    @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-    4> Add below annotations in test class
-    @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-    public class ProfileRepositoryIntegrationTest 
+---
 
+## Repository Deep Dive & Learnings
 
+### 1. Simple CRUD & Schema
+- **File:** `SimpleQueryRepository.java`
+- **Learning:** How to use `jdbcTemplate.update()` for INSERT/UPDATE/DELETE and `jdbcTemplate.queryForObject()` for single row retrieval.
+
+### 2. Complex Joins & Result Mapping
+**Endpoint (Internal):** `findAllCustomersWithProfilesAndOrders`
+
+- **The Challenge:** Mapping a "One-to-Many" relationship (Customer to Orders) using flat SQL results.
+- **The Solution:** **`ResultSetExtractor`**.
+- **Learnings:** 
+    - A `RowMapper` is used when 1 row in SQL = 1 Java object.
+    - A `ResultSetExtractor` is used when you need to "collapse" multiple SQL rows into a single nested Java object (e.g., 1 Customer with a `List<Order>`).
+
+### 3. Advanced SQL: CTEs (Common Table Expressions)
+**Method:** `findCustomersWithProfilesAndOrdersNameAndCount`
+
+- **The Query:** Uses a `WITH RankedOrders AS (...)` clause.
+- **Learnings:** Demonstrates that `JdbcTemplate` can handle any complex SQL that the underlying database (H2/MySQL) supports, which is often difficult in JPA.
+
+---
+
+## How to Run
+1. Run the module:
+   ```bash
+   mvn spring-boot:run -pl springJdbcTemplate
+   ```
+2. The application uses `schema.sql` and `data.sql` in `src/main/resources` to pre-populate the H2 database on every start.
+
+## Curl Examples (if Controller is enabled)
+*Note: Ensure `CustomerControllerJdbc` or similar is active.*
+```bash
+# Example search
+curl "http://localhost:8080/api/jdbc/customers?email=gmail"
+```
+
+---
+
+## JPA vs. JdbcTemplate: When to use what?
+
+| Feature | JPA (Hibernate) | JdbcTemplate |
+| :--- | :--- | :--- |
+| **Effort** | Low (Auto-generates SQL) | High (Manual SQL) |
+| **Control** | Medium (JPQL/Criteria) | High (Full SQL) |
+| **Performance** | Good (with tuning) | Excellent (No overhead) |
+| **Best for** | Standard CRUD, complex domains | Reporting, bulk updates, complex SQL |

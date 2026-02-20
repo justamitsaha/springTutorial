@@ -19,6 +19,15 @@ public class DataMapper {
         return customerDto;
     }
 
+
+    public static ProfileDto getProfileDto(Profile profile){
+        ModelMapper modelMapper = new ModelMapper();
+        CustomerDto customerDto = modelMapper.map(profile.getCustomer(), CustomerDto.class);
+        ProfileDto profileDto = modelMapper.map(profile, ProfileDto.class);
+        profileDto.setCustomerDto(customerDto);
+        return profileDto;
+    }
+
     /**
      * If we transform all the params of Customer to CustomerDTO then in turn
      * this will trigger Hibernate queries for Order, payments etc. to prevent this new method is created

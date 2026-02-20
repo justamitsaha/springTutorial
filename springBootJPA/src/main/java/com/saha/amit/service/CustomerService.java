@@ -5,10 +5,11 @@ import com.saha.amit.dto.CustomerDto;
 import com.saha.amit.dto.OrderDto;
 import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.model.Customer;
+import com.saha.amit.model.Profile;
 import com.saha.amit.repository.CustomerRepository;
+import com.saha.amit.repository.ProfileRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,17 +18,26 @@ import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
-    @Autowired
-    CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
+    private final ProfileRepository profileRepository;
 
 
     private final Log log = LogFactory.getLog(CustomerService.class);
 
-
-    public Customer save(Customer customer) {
-        return customerRepository.save(customer);
+    public CustomerService(CustomerRepository customerRepository, ProfileRepository profileRepository) {
+        this.customerRepository = customerRepository;
+        this.profileRepository = profileRepository;
     }
 
+
+    public void save(Customer customer) {
+        customerRepository.save(customer);
+    }
+
+
+    public Profile findProfileById(Long id){
+        return  profileRepository.findById(id).orElse(null);
+    }
 
     /*
     In this implementation we are not using default findById method provided by JPA instead we are using custom JPQL query. Reason
@@ -43,6 +53,7 @@ public class CustomerService {
         return customerRepository.findCustomersById(id);
         //return customerRepository.findById(id).orElse(null);
     }
+
 
     public CustomerDto findCustomersByIdProjections(Long id){
         return customerRepository.findCustomersByIdProjections(id);

@@ -2,6 +2,7 @@ package com.saha.amit.cotroller;
 
 import com.saha.amit.constants.AppConstants;
 import com.saha.amit.dto.CustomerDto;
+import com.saha.amit.dto.ProfileDto;
 import com.saha.amit.model.Customer;
 import com.saha.amit.service.CustomerService;
 import com.saha.amit.util.DataMapper;
@@ -24,6 +25,11 @@ public class CustomerController {
     CustomerService customerService;
 
     private final Log log = LogFactory.getLog(CustomerController.class);
+
+    @GetMapping("6/profile/{id}")
+    public ResponseEntity<ProfileDto> findProfileById(@PathVariable Long id){
+        return ResponseEntity.ok().body(DataMapper.getProfileDto(customerService.findProfileById(id)));
+    }
 
     @Operation(
             summary = AppConstants.GET_CUSTOMER_PROFILE_WITH_ID_SUMMARY,
